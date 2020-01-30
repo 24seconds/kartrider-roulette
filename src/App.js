@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import './style/RouletteResultComponent.scss';
-import './style/TrackListComponent.scss';
+import './style/index.scss';
 
 import RouletteResultComponent from './component/RouletteResultComponent';
 import PlayRouletteComponent from './component/PlayRouletteComponent';
 import SearchComponent from './component/Search/SearchComponent';
 import TrackListComponent from './component/Search/TrackListComponent';
+import CollectionComponent from './component/Collection/CollectionComponent';
 import './component/IndexedDbManager';
 
 class App extends Component {
@@ -17,6 +17,7 @@ class App extends Component {
         <RouletteResultComponent trackName={ '어비스 스카이라인' } />
         <PlayRouletteComponent />
         <SearchComponent />
+        <CollectionComponent />
         <TrackListComponent />
       </div>
     );

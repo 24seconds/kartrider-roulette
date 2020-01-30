@@ -1,0 +1,47 @@
+.kartrider-collection-item-component {
+  width: 100%;
+
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+  }
+
+  td.collection-data {
+    text-align: initial;
+    div {
+      display: flex;
+      justify-content: start;
+
+      div, button {
+        font-size: 12px;
+        color: $color-text;
+      }
+
+      .collection-name {
+        display: flex;
+        align-items: center;
+        width: auto;
+        text-align: start;
+        margin-right: auto;
+        flex-grow: 1;
+        
+      }
+  
+      .collection-util {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: auto;
+        min-height: 30px;
+        min-width: 150px;
+        // margin: 0 10px 0 0;
+
+        // button {
+        //   margin-left: 5px;
+        // }
+      }
+
+    } 
+  }
+}

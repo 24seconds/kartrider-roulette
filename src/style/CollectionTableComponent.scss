@@ -1,0 +1,38 @@
+.kartrider-collection-table-component {
+  border: solid 1px #808080;
+
+  table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+
+    td, th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th.collection-checkbox {
+      width: 20vw;
+      text-align: center;
+    }
+
+    th {    
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      color: $color-blue;
+      font-family: Noto Sans KR;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    tr:nth-child(even){background-color: #f2f2f2;}
+    tr:hover {background-color: #ddd;}
+  
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+    }
+  }
+}
