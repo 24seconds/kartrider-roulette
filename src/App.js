@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import './style/ResultTrackComponent.scss';
+import './style/RouletteResultComponent.scss';
 import './style/TrackListComponent.scss';
 
-import ResultTrackComponent from './component/ResultTrackComponent';
+import RouletteResultComponent from './component/RouletteResultComponent';
 import PlayRouletteComponent from './component/PlayRouletteComponent';
 import SearchComponent from './component/Search/SearchComponent';
 import TrackListComponent from './component/Search/TrackListComponent';
@@ -14,7 +14,7 @@ class App extends Component {
     return (
       <div className="App">
         <h3>카트라이더 룰렛!</h3>
-        <ResultTrackComponent trackName={ '어비스 스카이라인' } />
+        <RouletteResultComponent trackName={ '어비스 스카이라인' } />
         <PlayRouletteComponent />
         <SearchComponent />
         <TrackListComponent />

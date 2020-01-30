@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { updateRoulletteResult } from '../redux/action';
 
-export default class PlayRouletteComponent extends Component {
+class PlayRouletteComponent extends Component {
 
   constructor(props) {
     super(props);
@@ -9,7 +11,13 @@ export default class PlayRouletteComponent extends Component {
   }
 
   onClick() {
-    // do something here!
+    const track = (() => {
+      const rouletteArray = Array.from(this.props.rouletteSet);
+
+      return rouletteArray[Math.floor(Math.random() * rouletteArray.length)];
+    })();
+
+    this.props.updateRoulletteResult(track);
     console.log('onClick is called');
   }
 
@@ -21,3 +29,6 @@ export default class PlayRouletteComponent extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({ rouletteSet: state.rouletteSet });
+export default connect(mapStateToProps, { updateRoulletteResult })(PlayRouletteComponent);
