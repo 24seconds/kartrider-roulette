@@ -1,0 +1,36 @@
+.kartrider-track-popup-footer-component {
+  border-top: solid 1px $color-track-border;
+  margin: 0px 5px;
+  padding-top: 6px;
+
+  button {
+    border: solid 1px $color-track-border;
+    border-radius: 5px;
+    background-color: white;
+    margin: 0px 5px;
+    color: $color-text;
+    font-size: 12px;
+    height: 30px;
+    width: 50px;
+    outline: none;
+
+    &.footer-close {
+      &:hover {
+        cursor: pointer;
+        background-color: #f2f2f2;
+        opacity: 0.8;
+      }
+    }
+
+    &.footer-okay {
+      color: #ffffffc9;
+      width: 70px;
+      background-color: #2B93EE;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+  }
+}

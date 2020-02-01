@@ -1,0 +1,22 @@
+.kartrider-track-popup-component {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  // background-color: rgba(0, 0, 0, 0.5);
+  background-color: $color-popup-dim;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // display: inline-block;
+
+  .track-popup-container {
+    margin: 10px;
+    border: solid 2px $color-track-theme-border;
+    border-radius: 10px;
+    padding: 6px;
+    background-color: white;
+  }
+}

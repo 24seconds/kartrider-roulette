@@ -1,0 +1,26 @@
+.kartrider-track-container-component {
+  display: flex;
+  margin: 10px 0px;
+  height: 400px;
+
+  .track-theme-selector-container {
+    display: inline-block;
+    overflow-y: scroll;
+    height: 400px;
+    margin-right: 8px;
+  }
+
+  .track-item-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: fit-content(10px);
+    grid-column-gap: 6px;
+    grid-row-gap: 6px;
+    padding: 6px;
+    overflow-y: scroll;
+
+    border: solid 1px $color-track-border;
+    border-radius: 5px;
+    background-color: $color-track-background;
+  }
+}

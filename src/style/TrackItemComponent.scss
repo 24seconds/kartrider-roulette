@@ -1,0 +1,44 @@
+.kartrider-track-item-component {
+  display: inline-block;
+  // for debuggin border
+  // border: solid 1px black;
+  max-width: 200px;
+  flex: 1 0 0%;
+
+  .border {
+    display: flex;
+    box-sizing: border-box;
+    border: solid 3px $color-transparent;
+    border-radius: 5px;
+
+    &:hover, &.selected {
+      border: solid 3px $color-bd-selected;
+      border-radius: 9px;
+      cursor: pointer;
+      opacity: 0.88;
+    }
+  }
+
+  .track-image {
+    display: inline-block;
+    border: solid 1px $color-track-border;
+    border-radius: 5px;
+    background-color: white;
+    // height: 130px;
+    padding: 6px;
+
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .track-name {
+    text-align: center;
+    margin-top: 2px;
+    font-size: 12px;
+    // color: $color-black;
+    color: $color-text;
+    // opacity: 0.7;
+  }
+}
