@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import iconTrack from '../../asset/track.svg';
+import { openPopup } from '../../redux/action';
 
-export default class CollectionItemComponent extends Component {
+
+class CollectionItemComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -16,6 +20,7 @@ export default class CollectionItemComponent extends Component {
 
   onEditItem() {
     console.log('onEditItem');
+    this.props.openPopup();
   }
 
   onDeleteItem() {
@@ -37,9 +42,13 @@ export default class CollectionItemComponent extends Component {
         </td>
         <td className='collection-data'>
           <div>
-            <div className='collection-name'>{ name ? name : collectionName }</div>
+            <div className='collection-name'>
+              { name ? name : collectionName }
+            </div>
             <div className='collection-util'>
-              <button onClick={ this.onEditItem } > 트랙 </button>
+              <button className='collection-edit' onClick={ this.onEditItem } >
+                <img src={ iconTrack } alt="track icon" />
+              </button>
               <button onClick={ this.onDeleteItem } > 삭제 </button>
               <button onClick={ this.onDetail } > -> </button>
             </div>
@@ -49,3 +58,5 @@ export default class CollectionItemComponent extends Component {
     );
   }
 }
+
+export default connect(null, { openPopup })(CollectionItemComponent);

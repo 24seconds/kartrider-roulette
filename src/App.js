@@ -5,8 +5,8 @@ import './style/index.scss';
 import RouletteResultComponent from './component/RouletteResultComponent';
 import PlayRouletteComponent from './component/PlayRouletteComponent';
 import SearchComponent from './component/Search/SearchComponent';
-import TrackListComponent from './component/Search/TrackListComponent';
 import CollectionComponent from './component/Collection/CollectionComponent';
+import TrackPopupComponent from './component/TrackPopup/TrackPopupComponent';
 import './component/IndexedDbManager';
 
 class App extends Component {
@@ -18,7 +18,7 @@ class App extends Component {
         <PlayRouletteComponent />
         <SearchComponent />
         <CollectionComponent />
-        <TrackListComponent />
+        <TrackPopupComponent />
       </div>
     );
   }
