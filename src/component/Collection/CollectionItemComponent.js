@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import iconTrack from '../../asset/track.svg';
+import iconTrack from '../../asset/icon_track.png';
+import iconDelete from '../../asset/icon_delete.svg';
+import iconArrowRight from '../../asset/icon_arrow_right.png';
 import { openPopup } from '../../redux/action';
+import CheckBoxComponent from '../CheckBoxComponent';
 
 
 class CollectionItemComponent extends Component {
@@ -28,6 +31,7 @@ class CollectionItemComponent extends Component {
   }
 
   onDetail() {
+    this.props.onClick(true);
     console.log('onDetail');
   }
 
@@ -38,7 +42,7 @@ class CollectionItemComponent extends Component {
     return (
       <tr className='kartrider-collection-item-component'>
         <td>
-          <input type="checkbox"/>
+          <CheckBoxComponent />
         </td>
         <td className='collection-data'>
           <div>
@@ -49,8 +53,12 @@ class CollectionItemComponent extends Component {
               <button className='collection-edit' onClick={ this.onEditItem } >
                 <img src={ iconTrack } alt="track icon" />
               </button>
-              <button onClick={ this.onDeleteItem } > 삭제 </button>
-              <button onClick={ this.onDetail } > -> </button>
+              <button className='collection-delete' onClick={ this.onDeleteItem }>
+              <img src={ iconDelete } alt="delete icon" />
+              </button>
+              <button className='collection-detail' onClick={ this.onDetail }>
+                <img src={ iconArrowRight } alt="detail icon" />
+              </button>
             </div>
           </div>
         </td>

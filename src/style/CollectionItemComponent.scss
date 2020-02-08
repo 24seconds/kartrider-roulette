@@ -1,6 +1,18 @@
 .kartrider-collection-item-component {
   width: 100%;
 
+  td {
+    box-sizing: border-box;
+  }
+
+  td:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border: none;
+  }
+
   input[type='checkbox'] {
     width: 20px;
     height: 20px;
@@ -18,10 +30,6 @@
         color: $color-text;
       }
 
-      img {
-        width: 15px;
-      }
-
       .collection-name {
         display: flex;
         align-items: center;
@@ -29,22 +37,72 @@
         text-align: start;
         margin-right: auto;
         flex-grow: 1;
+        margin-right: 15px;
         
       }
   
       .collection-util {
         display: flex;
-        justify-content: space-around;
         align-items: center;
         width: auto;
         min-height: 30px;
-        min-width: 150px;
 
-        .collection-edit {
+        .collection-edit, .collection-delete, .collection-detail {
           margin: 0;
           padding: 0;
-          background-color: #66886e;
+          background-color: transparent;
+          outline: none;
         }
+
+        .collection-edit {
+          width: 30px;
+          margin-right: 15px;
+
+          border: solid 2px #147524;
+          border-radius: 5px;
+
+          &:hover {
+            cursor: pointer;
+            opacity: 0.6;
+          }
+
+          img {
+            display: block;
+            width: 100%;
+          }
+        }
+
+        .collection-delete {
+          border: none;
+          width: 20px;
+          margin-right: 10px;
+
+          img {
+            display: block;
+            width: 100%;
+
+            &:hover {
+              cursor: pointer;
+              opacity: 0.6;
+            }
+          }
+        }
+
+        .collection-detail {
+          border: none;
+          width: 15px;
+
+          img {
+            display: block;
+            width: 100%;
+
+            &:hover {
+              cursor: pointer;
+              opacity: 0.6;
+            }
+          }
+        }
+
       }
 
     } 
