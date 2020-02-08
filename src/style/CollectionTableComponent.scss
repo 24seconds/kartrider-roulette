@@ -1,10 +1,43 @@
+$duration: 0.4s;
+$transition-animation: transform $duration ease-in-out, opacity $duration ease-in-out;
+
 .kartrider-collection-table-component {
+  display: flex;
+  flex-wrap: nowrap;
   border: solid 1px #808080;
+  position: relative;
+  overflow: hidden;
+  height: 500px;
+  width: 700px;
+
+  .collection-container {
+    display: flex;
+    flex-wrap: nowrap;
+    position: absolute;
+    min-width: 1400px;
+    transform: translate(0%, 0);
+  }
 
   table {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 100%;
+    border: none;
+    width: 50%;
+    opacity: 1;
+    transition: $transition-animation;
+
+    &.hidden {
+      transform: translate(-100%, 0);
+    }
+
+    &.show {
+    }
+
+    > thead th {
+      &:first-child {
+        width: 30px;
+      }
+    }
 
     td, th {
       border: 1px solid #ddd;
@@ -33,6 +66,22 @@
       width: 20px;
       height: 20px;
       margin: 0;
+    }
+  }
+
+  .detail-component {
+    width: 50%;
+    opacity: 0;
+    transition: $transition-animation;
+
+    &.show {
+      opacity: 1;
+      transform: translate(-100%, 0);
+    }
+
+    &.hidden {
+      opacity: 0;
+      transform: translate(0%, 0);
     }
   }
 }

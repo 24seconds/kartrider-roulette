@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import CollectionItemComponent from './CollectionItemComponent';
+import CollectionDetailItemComponent from './CollectionDetailItemComponent';
+import CheckBoxComponent from '../CheckBoxComponent';
 
 export default class CollectionTableComponent extends Component {
   constructor(props) {
@@ -7,9 +9,11 @@ export default class CollectionTableComponent extends Component {
 
     this.state = {
       searchText: 'This is search component!',
+      isTableHidden: false,
     };
 
     this.onChange = this.onChange.bind(this);
+    this.onTableVisibilityChange = this.onTableVisibilityChange.bind(this);
   }
 
   onChange(event) {
@@ -18,29 +22,43 @@ export default class CollectionTableComponent extends Component {
     });
   }
 
+  onTableVisibilityChange(isTableHidden) {
+    console.log("onTableVisibilityChange is called, isTableHidden is ", isTableHidden);
+    this.setState({
+      isTableHidden,
+    });
+  }
+
   render() {
-    const { searchText } = this.state;
+    const { searchText, isTableHidden } = this.state;
 
     return (
       <div className='kartrider-collection-table-component'>
-        <table>
-          <thead>
-            <tr>
-              <th className='collection-checkbox'>
-                <input type="checkbox"/>
-              </th>
-              <th>컬렉션 이름</th>
-            </tr>
-          </thead>
-          <tbody>
-            <CollectionItemComponent />
-            <CollectionItemComponent name={ '형독 컬렉션! 글자가 엄청 길어질때는 이걸 어떻게 처리해주어야 할지 잘 모르겠는데?' } />
-            <CollectionItemComponent />
-            <CollectionItemComponent />
-            <CollectionItemComponent />
-            <CollectionItemComponent />
-          </tbody>
-        </table>
+        <div className='collection-container'>
+          <table className={ isTableHidden ? 'hidden' : 'show' } >
+            <thead>
+              <tr>
+                <th className='collection-checkbox'>
+                  <CheckBoxComponent />
+                </th>
+                <th>컬렉션 이름</th>
+              </tr>
+            </thead>
+            <tbody>
+              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+              <CollectionItemComponent
+                onClick={ this.onTableVisibilityChange }
+                name={ '형독 컬렉션! 글자가 엄청 길어질때는 이걸 어떻게 처리해주어야 할지 잘 모르겠는데?' } />
+              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+            </tbody>
+          </table>
+          <div className={ `detail-component ${ isTableHidden ? 'show' : 'hidden' }` }>
+            <CollectionDetailItemComponent onClick={ this.onTableVisibilityChange } />
+          </div>
+        </div>
       </div>
     );
   }
