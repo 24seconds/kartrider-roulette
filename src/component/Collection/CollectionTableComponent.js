@@ -33,7 +33,7 @@ export default class CollectionTableComponent extends Component {
     const { searchText, isTableHidden } = this.state;
 
     return (
-      <div className='kartrider-collection-table-component'>
+      <div className='kartrider-collection-table-component' tabIndex='-1'>
         <div className='collection-container'>
           <table className={ isTableHidden ? 'hidden' : 'show' } >
             <thead>
