@@ -1,4 +1,93 @@
 .kartrider-collection-detail-item-component {
-  background-color: green ;
   height: 100%;
+  padding: 15px;
+
+  .collection-detail-title {
+    display: flex;
+    position: relative;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 62px;
+    margin: 0;
+
+    > div {
+      display: inline-block;
+      font-weight: 400;
+      font-size: 22px;
+    }
+
+    .collection-detail-back {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      margin: 0 20px 0 0;
+      padding: 0;
+      // position: absolute;
+      border: none;
+      background-color: transparent;
+      right: 0px;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.6;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+      }
+
+    }
+  }
+
+  .collection-detail-track-container {
+    border-top: solid 2px $color-track-border;
+
+    .collection-detail-track {
+      display: flex;
+      align-items: center;
+      position: relative;
+      height: 62px;
+      text-align: left;
+      border-bottom: solid 1px $color-track-theme-border;
+      font-size: 15px;
+
+      &:hover {
+        background-color: $color-item-hover;
+      }
+
+      div {
+        display: inline-block;
+      }
+
+      > img {
+        display: block;
+        width: 35px;
+        height: 35px;
+        margin: 0 20px 0 0;
+      }
+
+      .collection-detail-delete {
+        position: absolute;
+        right: 0px;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 0.6;
+        }
+
+        img {
+          display: block;
+          width: 25px;
+          height: 25px;
+          margin: 0 20px 0 0;
+        }
+      }
+    }
+  }
 }

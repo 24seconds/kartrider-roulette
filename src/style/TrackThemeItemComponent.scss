@@ -9,7 +9,7 @@
 
   &:hover {
     border-color: $color-track-theme-border;
-    background-color: #f2f2f2;
+    background-color: $color-item-hover;
     cursor: pointer;
 
     img {
