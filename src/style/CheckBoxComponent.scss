@@ -1,0 +1,27 @@
+.kartrider-checkbox-component {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: solid 2px $color-checkbox-border;
+  border-radius: 2px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+
+  .check-mark {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 11px;
+    height: 5px;
+    transform: rotateZ(135deg);
+    border: solid 2px red;
+    border-bottom: none;
+    border-left: none;
+  }
+}
