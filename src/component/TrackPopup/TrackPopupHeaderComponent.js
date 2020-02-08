@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import iconClose from '../../asset/close.png';
 import TrackThemeCheckboxComponent from './TrackThemeCheckboxComponent';
+import { IMAGE_URL } from '../../redux/store';
 
 
 export default class TrackPopupHeaderComponent extends Component {
@@ -24,7 +24,7 @@ export default class TrackPopupHeaderComponent extends Component {
             <input type='text' placeholder='컬렉션 이름 ex) 나만의 컬렉션'/>
           </div>
           <button className='track-popup-close' onClick={ this.onClose }>
-            <img src={ iconClose } alt='track popup close'/>
+            <img src={ `${IMAGE_URL}/close.png` } alt='track popup close'/>
           </button>
         </div>
         <div className='track-popup-theme'>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import iconTrackAbyssSkyline from '../../asset/어비스 스카이라인.png';
+import { IMAGE_URL } from '../../redux/store';
 
 export default class TrackItemComponent extends Component {
   render() {
@@ -8,7 +8,7 @@ export default class TrackItemComponent extends Component {
         {/* selected or not */}
         <div className='border'>
           <div className='track-image' >
-            <img src={ iconTrackAbyssSkyline } alt="track icon" />
+            <img src={ `${IMAGE_URL}/어비스 스카이라인.png` } alt="track icon" />
           </div>
         </div>
         <div className='track-name'>

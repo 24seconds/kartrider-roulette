@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import iconTrack from '../../asset/icon_track.png';
-import iconDelete from '../../asset/icon_delete.svg';
-import iconArrowRight from '../../asset/icon_arrow_right.png';
 import { openPopup } from '../../redux/action';
 import CheckBoxComponent from '../CheckBoxComponent';
+import { IMAGE_URL } from '../../redux/store';
 
 
 class CollectionItemComponent extends Component {
@@ -51,13 +49,13 @@ class CollectionItemComponent extends Component {
             </div>
             <div className='collection-util'>
               <button className='collection-edit' onClick={ this.onEditItem } >
-                <img src={ iconTrack } alt="track icon" />
+                <img src={ `${IMAGE_URL}/icon_track.png` } alt="track icon" />
               </button>
               <button className='collection-delete' onClick={ this.onDeleteItem }>
-              <img src={ iconDelete } alt="delete icon" />
+              <img src={ `${IMAGE_URL}/icon_delete.svg` } alt="delete icon" />
               </button>
               <button className='collection-detail' onClick={ this.onDetail }>
-                <img src={ iconArrowRight } alt="detail icon" />
+                <img src={ `${IMAGE_URL}/icon_arrow_right.png` } alt="detail icon" />
               </button>
             </div>
           </div>
