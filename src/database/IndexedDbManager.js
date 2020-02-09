@@ -1,19 +1,11 @@
-const DATABASE_NAME = 'TEST_DATABASE';
+import trackData from './track_data.json';
+import collectionDefaultData from './collection_default_data.json';
+
+
+const DATABASE_NAME = 'ROULETTE_DB';
 const VERSION = 1;
-const OBJECT_STORE_NAME = 'objectStoreTest1';
-const OBJECT_STORE_COLLECTION = 'objectStoreDefaultCollection';
-
-// This is what our customer data looks like.
-const customerData = [
-  { ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-  { ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" },
-  { ssn: "666-66-6666", name: "Ding", age: 32, email: "donna@home.org" },
-];
-
-const defaultCollectionData = [
-  { name: '2020 카트라이더 시즌 1', createdAt: 11, trackList: [1,2,3,5] },
-  { name: '형독 컬렉션', createdAt: 22, trackList: [8,9,10,11] },
-];
+const OBJECT_STORE_TRACK = 'track';
+const OBJECT_STORE_COLLECTION = 'collection';
 
 
 class IndexedDBManager {
@@ -36,20 +28,23 @@ class IndexedDBManager {
 
     request.onupgradeneeded = event => {
       const db = event.target.result;
-      const objectStore = db.createObjectStore(OBJECT_STORE_NAME, { autoIncrement: true });
+      const objectStore = db.createObjectStore(OBJECT_STORE_TRACK, { keyPath: 'trackName' });
       db.createObjectStore(OBJECT_STORE_COLLECTION, { autoIncrement: true });
       
       console.log('onupgradeneeded, objectStore is ', objectStore);
 
+      objectStore.createIndex(`index_${OBJECT_STORE_TRACK}_theme`, 'theme', { unique: false });
+      objectStore.createIndex(`index_${OBJECT_STORE_TRACK}_trackType`, 'trackType', { unique: false });
+
       objectStore.transaction.oncomplete = event => {
-        const objectStoreName = db.transaction(OBJECT_STORE_NAME, 'readwrite').objectStore(OBJECT_STORE_NAME);
-        customerData.forEach(customer => {
-          objectStoreName.add(customer);
+        const trackObjectStore = db.transaction([OBJECT_STORE_TRACK], 'readwrite').objectStore(OBJECT_STORE_TRACK);
+        trackData.forEach((track, index) => {
+          const r = trackObjectStore.add(track);
         });
 
         const objectStoreCollection = db.transaction(OBJECT_STORE_COLLECTION, 'readwrite').objectStore(OBJECT_STORE_COLLECTION);
-        defaultCollectionData.forEach(customer => {
-          objectStoreCollection.add(customer);
+        collectionDefaultData.forEach(collection => {
+          objectStoreCollection.add(collection);
         });
       };
     };
