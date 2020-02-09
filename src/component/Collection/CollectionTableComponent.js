@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import CollectionItemComponent from './CollectionItemComponent';
 import CollectionDetailItemComponent from './CollectionDetailItemComponent';
 import CheckBoxComponent from '../CheckBoxComponent';
+import IndexedDbManager from '../../database/IndexedDbManager';
 
 export default class CollectionTableComponent extends Component {
   constructor(props) {
@@ -10,10 +11,25 @@ export default class CollectionTableComponent extends Component {
     this.state = {
       searchText: 'This is search component!',
       isTableHidden: false,
+      collectionObject: {},
+      selectedTrackList: [],
     };
 
     this.onChange = this.onChange.bind(this);
-    this.onTableVisibilityChange = this.onTableVisibilityChange.bind(this);
+    this.onDetail = this.onDetail.bind(this);
+  }
+
+  async componentDidMount() {
+    const collectionList = await IndexedDbManager.getAllColection();
+    const collectionObject = {};
+
+    collectionList.forEach(collection => {
+      collectionObject[collection.id] = collection;
+    });
+
+    this.setState({
+      collectionObject,
+    });
   }
 
   onChange(event) {
@@ -22,15 +38,28 @@ export default class CollectionTableComponent extends Component {
     });
   }
 
-  onTableVisibilityChange(isTableHidden) {
+  async onDetail(isTableHidden, selectedCollectionId = null) {
     console.log("onTableVisibilityChange is called, isTableHidden is ", isTableHidden);
-    this.setState({
+    const { collectionObject } = this.state;
+    const stateToUpdate = {
       isTableHidden,
-    });
+    };
+
+    await (async () => {
+      const collection = collectionObject[selectedCollectionId];
+      if (collection) {
+        const trackList = await IndexedDbManager.getTrackList(collection['trackList']);
+        stateToUpdate['selectedTrackList'] = trackList;
+      }
+    })();
+
+    this.setState(stateToUpdate);
   }
 
   render() {
-    const { searchText, isTableHidden } = this.state;
+    const {
+      isTableHidden, collectionObject, selectedTrackList
+    } = this.state;
 
     return (
       <div className='kartrider-collection-table-component' tabIndex='-1'>
@@ -53,10 +82,22 @@ export default class CollectionTableComponent extends Component {
               <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
               <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
               <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+              {
+                Object.values(collectionObject).map(collection => {
+                  return (
+                    <CollectionItemComponent
+                      onClick={ this.onDetail }
+                      key= { `key-${collection.id}` }
+                      collection={ collection }/>
+                  );
+                })
+              }
             </tbody>
           </table>
           <div className={ `detail-component ${ isTableHidden ? 'show' : 'hidden' }` }>
-            <CollectionDetailItemComponent onClick={ this.onTableVisibilityChange } />
+            <CollectionDetailItemComponent
+              trackList={ selectedTrackList }
+              onClick={ this.onDetail } />
           </div>
         </div>
       </div>

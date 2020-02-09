@@ -14,6 +14,27 @@ class IndexedDBManager {
     this.open();
   }
 
+  async tryOpen() {
+    if (this.db !== null) {
+      return true;
+    }
+
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(DATABASE_NAME, VERSION);
+      request.onerror = event => {
+        console.log("Why didn't you allow my web app to use IndexedDB?!");
+        reject(event);
+      };
+
+      request.onsuccess = event => {
+        console.log('open db!');
+        const db = event.target.result;
+        this.db = db;
+        resolve(true);
+      };
+    })
+  }
+
   open() {
     const request = indexedDB.open(DATABASE_NAME, VERSION);
     request.onerror = event => {
@@ -29,7 +50,7 @@ class IndexedDBManager {
     request.onupgradeneeded = event => {
       const db = event.target.result;
       const objectStore = db.createObjectStore(OBJECT_STORE_TRACK, { keyPath: 'trackName' });
-      db.createObjectStore(OBJECT_STORE_COLLECTION, { autoIncrement: true });
+      db.createObjectStore(OBJECT_STORE_COLLECTION, { keyPath: 'id', autoIncrement: true });
       
       console.log('onupgradeneeded, objectStore is ', objectStore);
 
@@ -48,6 +69,55 @@ class IndexedDBManager {
         });
       };
     };
+  }
+
+  async getAllColection() {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([OBJECT_STORE_COLLECTION]);
+      const objectStore = transaction.objectStore(OBJECT_STORE_COLLECTION);
+      const request = objectStore.getAll();
+
+      request.onerror = function(event) {
+        // Handle errors!
+        console.log("onerror, ", event);
+        reject(event);
+      };
+
+      request.onsuccess = function(event) {
+        resolve(event.target.result);
+      };
+    });
+  }
+
+  async getTrackList(keys) {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const resultArray = [];
+
+      const transaction = this.db.transaction([OBJECT_STORE_TRACK]);
+      const objectStore = transaction.objectStore(OBJECT_STORE_TRACK);
+      keys.forEach(key => {
+        const request = objectStore.get(key);
+        request.onsuccess = function(event) {
+          resultArray.push(event.target.result);
+        };
+      });
+
+      transaction.oncomplete = (event) => {
+        resolve(resultArray);
+      }
+
+      transaction.onabort = (event) => {
+        reject(event);
+      }
+
+      transaction.onerror = (event) => {
+        reject(event);
+      }
+    });
   }
 }
 

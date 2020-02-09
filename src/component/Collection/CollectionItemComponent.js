@@ -29,13 +29,14 @@ class CollectionItemComponent extends Component {
   }
 
   onDetail() {
-    this.props.onClick(true);
+    const { collection } = this.props;
+    this.props.onClick(true, collection['id']);
     console.log('onDetail');
   }
 
   render() {
     const { collectionName } = this.state;
-    const { name } = this.props;
+    const { collection } = this.props;
 
     return (
       <tr className='kartrider-collection-item-component'>
@@ -45,7 +46,7 @@ class CollectionItemComponent extends Component {
         <td className='collection-data'>
           <div>
             <div className='collection-name'>
-              { name ? name : collectionName }
+              { collection ? collection['name'] : collectionName }
             </div>
             <div className='collection-util'>
               <button className='collection-edit' onClick={ this.onEditItem } >
