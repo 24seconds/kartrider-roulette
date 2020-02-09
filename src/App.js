@@ -7,6 +7,7 @@ import PlayRouletteComponent from './component/PlayRouletteComponent';
 import SearchComponent from './component/Search/SearchComponent';
 import CollectionComponent from './component/Collection/CollectionComponent';
 import TrackPopupComponent from './component/TrackPopup/TrackPopupComponent';
+import DataSourceDescripitonComponent from './component/DataSourceDescripitonComponent';
 import './database/IndexedDbManager.js';
 
 
@@ -18,6 +19,7 @@ class App extends Component {
         <RouletteResultComponent trackName={ '어비스 스카이라인' } />
         <PlayRouletteComponent />
         <SearchComponent />
+        <DataSourceDescripitonComponent />
         <CollectionComponent />
         <TrackPopupComponent />
       </div>
