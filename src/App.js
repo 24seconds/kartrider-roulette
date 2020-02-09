@@ -7,7 +7,8 @@ import PlayRouletteComponent from './component/PlayRouletteComponent';
 import SearchComponent from './component/Search/SearchComponent';
 import CollectionComponent from './component/Collection/CollectionComponent';
 import TrackPopupComponent from './component/TrackPopup/TrackPopupComponent';
-import './component/IndexedDbManager';
+import './database/IndexedDbManager.js';
+
 
 class App extends Component {
   render() {
