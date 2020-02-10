@@ -1,16 +1,11 @@
 .kartrider-collection-item-component {
   width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 
-  td {
-    box-sizing: border-box;
-  }
-
-  td:first-child {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    border: none;
+  div.collection-item-checkbox {
+    @extend .collection-checkbox;
   }
 
   input[type='checkbox'] {
@@ -19,10 +14,14 @@
     margin: 0;
   }
 
-  td.collection-data {
+  div.collection-data {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
     text-align: initial;
     div {
       display: flex;
+      width: 100%;
       justify-content: flex-start;
 
       div, button {
@@ -46,6 +45,7 @@
         align-items: center;
         width: auto;
         min-height: 30px;
+        margin-right: 15px;
 
         .collection-edit, .collection-delete, .collection-detail {
           margin: 0;

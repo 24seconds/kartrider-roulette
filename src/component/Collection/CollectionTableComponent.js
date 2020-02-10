@@ -64,16 +64,14 @@ export default class CollectionTableComponent extends Component {
     return (
       <div className='kartrider-collection-table-component' tabIndex='-1'>
         <div className='collection-container'>
-          <table className={ isTableHidden ? 'hidden' : 'show' } >
-            <thead>
-              <tr>
-                <th className='collection-checkbox'>
-                  <CheckBoxComponent />
-                </th>
-                <th>컬렉션 이름</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div className={ `collection-list ` + (isTableHidden ? 'hidden' : 'show') } >
+            <div className='collection-list-header'>
+              <div className='collection-checkbox'>
+                <CheckBoxComponent />
+              </div>
+              <div className='collection-header-title' >컬렉션 이름</div>
+            </div>
+            <div className='collection-list-body'>
               <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
               <CollectionItemComponent
                 onClick={ this.onTableVisibilityChange }
@@ -92,8 +90,8 @@ export default class CollectionTableComponent extends Component {
                   );
                 })
               }
-            </tbody>
-          </table>
+            </div>
+          </div>
           <div className={ `detail-component ${ isTableHidden ? 'show' : 'hidden' }` }>
             <CollectionDetailItemComponent
               trackList={ selectedTrackList }

@@ -39,11 +39,11 @@ class CollectionItemComponent extends Component {
     const { collection } = this.props;
 
     return (
-      <tr className='kartrider-collection-item-component'>
-        <td>
+      <div className='kartrider-collection-item-component'>
+        <div className='collection-item-checkbox'>
           <CheckBoxComponent />
-        </td>
-        <td className='collection-data'>
+        </div>
+        <div className='collection-data'>
           <div>
             <div className='collection-name'>
               { collection ? collection['name'] : collectionName }
@@ -60,8 +60,8 @@ class CollectionItemComponent extends Component {
               </button>
             </div>
           </div>
-        </td>
-      </tr>
+        </div>
+      </div>
     );
   }
 }

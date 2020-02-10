@@ -19,9 +19,8 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
     transform: translate(0%, 0);
   }
 
-  table {
+  .collection-list {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
     border: none;
     width: 50%;
     opacity: 1;
@@ -31,42 +30,31 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
       transform: translate(-100%, 0);
     }
 
-    &.show {
-    }
+    .collection-list-header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: auto;
+      height: 63px;
+      border: 1px solid #ddd;
 
-    > thead th {
-      &:first-child {
-        width: 30px;
+      .collection-checkbox {
+        @extend .collection-checkbox;
+      }
+
+      .collection-header-title {
+        display: inline-block;
+        color: $color-blue;
       }
     }
 
-    td, th {
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
+    .collection-list-body {
+      height: 100%;
+      overflow-y: scroll;
 
-    th.collection-checkbox {
-      width: 20vw;
-      text-align: center;
-    }
-
-    th {    
-      padding-top: 12px;
-      padding-bottom: 12px;
-      text-align: left;
-      color: $color-blue;
-      font-family: Noto Sans KR;
-      font-size: 16px;
-      font-weight: 500;
-    }
-
-    tr:nth-child(even){background-color: $color-item-hover;}
-    tr:hover {background-color: #ddd;}
-  
-    input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      margin: 0;
+      > div {
+        height: 63px;
+      }
     }
   }
 
