@@ -3,8 +3,6 @@ import {
   ADD_ROULETTE_SET,
   DELETE_ROULETTE_SET,
   UPDATE_ROULETTE_RESULT,
-  OPEN_POPUP,
-  CLOSE_POPUP,
 } from "./actionType";
 
 const initialRouletteSet = new Set(['병마용', '스카이 라인', '고가', '대저택', '사빙공']);
@@ -35,18 +33,7 @@ function rouletteResult(state = 'Default initial Result', action) {
   return state;
 }
 
-function isPopupOpen(state = false, action) {
-  if (action.type === OPEN_POPUP) {
-    return true;
-  } else if (action.type === CLOSE_POPUP) {
-    return false;
-  }
-
-  return state;
-}
-
 export default combineReducers({
   rouletteSet,
   rouletteResult,
-  isPopupOpen,
 });

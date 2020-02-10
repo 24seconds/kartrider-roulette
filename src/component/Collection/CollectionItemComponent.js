@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { openPopup } from '../../redux/action';
 import CheckBoxComponent from '../CheckBoxComponent';
 import { IMAGE_URL } from '../../redux/store';
+import TrackPopupComponent from '../TrackPopup/TrackPopupComponent';
 
 
-class CollectionItemComponent extends Component {
+export default class CollectionItemComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -19,9 +18,12 @@ class CollectionItemComponent extends Component {
     this.onDetail = this.onDetail.bind(this);
   }
 
-  onEditItem() {
-    console.log('onEditItem');
-    this.props.openPopup();
+  async onEditItem() {
+    const { collection } = this.props;
+
+    const result = await TrackPopupComponent.open({
+      collection,
+    });
   }
 
   onDeleteItem() {
@@ -65,5 +67,3 @@ class CollectionItemComponent extends Component {
     );
   }
 }
-
-export default connect(null, { openPopup })(CollectionItemComponent);

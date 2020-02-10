@@ -1,42 +1,58 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import TrackContainerComponent from './TrackContainerComponent';
 import TrackPopupHeaderComponent from './TrackPopupHeaderComponent';
 import TrackPopupFooterComponent from './TrackPopupFooterComponent';
-import { closePopup } from '../../redux/action';
 
-class TrackPopupComponent extends Component {
+export default class TrackPopupComponent extends Component {
   constructor(props) {
     super(props);
 
     this.onClose = this.onClose.bind(this);
   }
 
+  static open(props) {
+    const promise = new Promise((resolve, reject) => {
+      const component = React.createElement(
+        this, { ...props, resolve }, null);
+      ReactDOM.render(component, document.getElementById('popup-root'));
+    })
+
+    return promise;
+  }
+
+  close() {
+    const popupRoot = document.getElementById('popup-root');
+    ReactDOM.unmountComponentAtNode(popupRoot);
+  }
+
   onClose() {
     console.log('onClose');
-    this.props.closePopup();
+    // resovle here;
+    // resolve('some value')
+    this.close();
+  }
+
+  componentDidMount() {
+    const { collection } = this.props;
+    // fetch data here
+  }
+
+  renderContent() {
+
   }
 
   render() {
-    const { isPopupOpen } = this.props;
+    const { collection } = this.props;
 
     return (
-      <Fragment>
-        {
-          isPopupOpen ?
-          <div className='kartrider-track-popup-component'>
-            <div className='track-popup-container'>
-              <TrackPopupHeaderComponent onClose={ this.onClose } />
-              <TrackContainerComponent />
-              <TrackPopupFooterComponent onClose={ this.onClose } />
-            </div>
-          </div> :
-          null
-        }
-      </Fragment>
+      <div className='kartrider-track-popup-component'>
+        <div className='track-popup-container'>
+          <TrackPopupHeaderComponent name={ collection['name'] } onClose={ this.onClose } />
+          <TrackContainerComponent />
+          <TrackPopupFooterComponent onClose={ this.onClose } />
+        </div>
+      </div>
     );
   }
 }
-
-const mapStateToProps = state => ({ isPopupOpen: state.isPopupOpen });
-export default connect(mapStateToProps, { closePopup })(TrackPopupComponent);

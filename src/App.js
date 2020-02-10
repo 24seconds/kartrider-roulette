@@ -6,7 +6,6 @@ import RouletteResultComponent from './component/RouletteResultComponent';
 import PlayRouletteComponent from './component/PlayRouletteComponent';
 import SearchComponent from './component/Search/SearchComponent';
 import CollectionComponent from './component/Collection/CollectionComponent';
-import TrackPopupComponent from './component/TrackPopup/TrackPopupComponent';
 import DataSourceDescripitonComponent from './component/DataSourceDescripitonComponent';
 import './database/IndexedDbManager.js';
 
@@ -21,7 +20,6 @@ class App extends Component {
         <SearchComponent />
         <DataSourceDescripitonComponent />
         <CollectionComponent />
-        <TrackPopupComponent />
       </div>
     );
   }
