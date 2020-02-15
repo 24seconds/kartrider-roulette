@@ -1,12 +1,18 @@
 .kartrider-track-item-component {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   // for debuggin border
   // border: solid 1px black;
+  width: 200px;
   max-width: 200px;
+  height: 150px;
   flex: 1 0 0%;
 
   .border {
     display: flex;
+    width: 190px;
     box-sizing: border-box;
     border: solid 3px $color-transparent;
     border-radius: 5px;
@@ -26,6 +32,7 @@
     background-color: white;
     // height: 130px;
     padding: 6px;
+    width: 100%;
 
     img {
       display: block;

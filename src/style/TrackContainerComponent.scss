@@ -12,6 +12,7 @@
 
   .track-item-container {
     display: grid;
+    min-width: 600px;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: fit-content(10px);
     grid-column-gap: 6px;

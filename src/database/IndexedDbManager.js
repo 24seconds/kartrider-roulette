@@ -1,10 +1,12 @@
 import trackData from './track_data.json';
+import themeData from './theme_data.json';
 import collectionDefaultData from './collection_default_data.json';
 
 
 const DATABASE_NAME = 'ROULETTE_DB';
 const VERSION = 1;
 const OBJECT_STORE_TRACK = 'track';
+const OBJECT_STORE_THEME = 'theme';
 const OBJECT_STORE_COLLECTION = 'collection';
 
 
@@ -51,6 +53,7 @@ class IndexedDBManager {
       const db = event.target.result;
       const objectStore = db.createObjectStore(OBJECT_STORE_TRACK, { keyPath: 'trackName' });
       db.createObjectStore(OBJECT_STORE_COLLECTION, { keyPath: 'id', autoIncrement: true });
+      db.createObjectStore(OBJECT_STORE_THEME, { keyPath: 'themeName' });
       
       console.log('onupgradeneeded, objectStore is ', objectStore);
 
@@ -59,13 +62,18 @@ class IndexedDBManager {
 
       objectStore.transaction.oncomplete = event => {
         const trackObjectStore = db.transaction([OBJECT_STORE_TRACK], 'readwrite').objectStore(OBJECT_STORE_TRACK);
-        trackData.forEach((track, index) => {
-          const r = trackObjectStore.add(track);
+        trackData.forEach(track => {
+          trackObjectStore.add(track);
         });
 
         const objectStoreCollection = db.transaction(OBJECT_STORE_COLLECTION, 'readwrite').objectStore(OBJECT_STORE_COLLECTION);
         collectionDefaultData.forEach(collection => {
           objectStoreCollection.add(collection);
+        });
+
+        const themeObjectStore = db.transaction(OBJECT_STORE_THEME, 'readwrite').objectStore(OBJECT_STORE_THEME);
+        themeData.forEach(theme => {
+          themeObjectStore.add(theme);
         });
       };
     };
@@ -116,6 +124,55 @@ class IndexedDBManager {
 
       transaction.onerror = (event) => {
         reject(event);
+      }
+    });
+  }
+
+  async getAllThemeList() {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([OBJECT_STORE_THEME]);
+      const objectStore = transaction.objectStore(OBJECT_STORE_THEME);
+      const request = objectStore.getAll();
+
+      request.onerror = function(event) {
+        // Handle errors!
+        console.log("onerror, ", event);
+        reject(event);
+      };
+
+      request.onsuccess = function(event) {
+        resolve(event.target.result);
+      };
+    });
+  }
+
+  async getTrackByTheme(themeKey) {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([OBJECT_STORE_TRACK]);
+      const objectStore = transaction.objectStore(OBJECT_STORE_TRACK);
+      const index = objectStore.index(`index_${OBJECT_STORE_TRACK}_theme`);
+      const resultArray = []
+
+      index.openCursor(IDBKeyRange.only(themeKey)).onsuccess = (event) => {
+        const cursor = event.target.result;
+
+        if (cursor) {
+          resultArray.push(cursor.value);
+
+          cursor.continue();
+        }
+      }
+
+      transaction.oncomplete = _ => {
+        resolve(resultArray);
+      }
+
+      transaction.onabort = _ => {
+        resolve(resultArray);
       }
     });
   }

@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom';
 import TrackContainerComponent from './TrackContainerComponent';
 import TrackPopupHeaderComponent from './TrackPopupHeaderComponent';
 import TrackPopupFooterComponent from './TrackPopupFooterComponent';
+import IndexedDbManager from '../../database/IndexedDbManager';
 
 export default class TrackPopupComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      collectionTrackList: { },
+      themeList: [],
+    }
 
     this.onClose = this.onClose.bind(this);
   }
@@ -33,9 +39,13 @@ export default class TrackPopupComponent extends Component {
     this.close();
   }
 
-  componentDidMount() {
-    const { collection } = this.props;
-    // fetch data here
+  async componentDidMount() {
+    const themes = await IndexedDbManager.getAllThemeList();
+    themes.sort((a, b) => b['themeOrder'] - a['themeOrder']);
+
+    this.setState({
+      themeList: themes,
+    });
   }
 
   renderContent() {
@@ -44,12 +54,14 @@ export default class TrackPopupComponent extends Component {
 
   render() {
     const { collection } = this.props;
+    const { themeList } = this.state;
 
     return (
       <div className='kartrider-track-popup-component'>
         <div className='track-popup-container'>
-          <TrackPopupHeaderComponent name={ collection['name'] } onClose={ this.onClose } />
-          <TrackContainerComponent />
+          <TrackPopupHeaderComponent
+            name={ collection['name'] } onClose={ this.onClose } />
+          <TrackContainerComponent themeList={ themeList } />
           <TrackPopupFooterComponent onClose={ this.onClose } />
         </div>
       </div>
