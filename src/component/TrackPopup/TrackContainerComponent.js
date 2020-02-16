@@ -1,64 +1,30 @@
 import React, { Component } from 'react';
 import TrackThemeItemComponent from './TrackThemeItemComponent';
 import TrackItemComponent from './TrackItemComponent';
-import IndexedDbManager from '../../database/IndexedDbManager';
 
 export default class TrackContainerComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      selectedTheme: null,
-      selectedTrackList: [],
-    };
-
     this.onSelectTheme = this.onSelectTheme.bind(this);
   }
 
-  async componentDidUpdate(_, prevState) {
-    const { selectedTheme } = this.state;
-    const { themeList } = this.props;
+  onSelectTheme(theme) {
+    const { onSelectTheme } = this.props;
 
-    if (selectedTheme === null && themeList.length > 0) {
-      const selectedTheme = themeList[0];
-      const selectedTrackList = await this.getTrackList(selectedTheme['themeName']);
-
-      this.setState({
-        selectedTheme,
-        selectedTrackList
-      });
+    if (onSelectTheme) {
+      onSelectTheme(theme);
     }
   }
 
-  async getTrackList(theme) {
-    const trackList = await IndexedDbManager.getTrackByTheme(theme);
-
-    trackList.sort((a, b) => {
-      if (a['isReverse'] && !b['isReverse']) {
-        return 1;
-      }
-
-      if (!a['isReverse'] && b['isReverse']) {
-        return -1;
-      }
-
-      return b['difficulty'] - a['difficulty'];
-    });
-
-    return trackList;
-  }
-
-  async onSelectTheme(theme) {
-    const selectedTrackList = await this.getTrackList(theme['themeName']);
-    this.setState({
-      selectedTheme: theme,
-      selectedTrackList
-    });
-  }
-
   render() {
-    const { themeList } = this.props;
-    const { selectedTheme, selectedTrackList } = this.state;
+    const {
+      themeList,
+      selectedTheme,
+      selectedTrackList,
+      collectionTrackSet,
+      onSelectTrack,
+    } = this.props;
 
     return (
       <div className='kartrider-track-container-component'>
@@ -81,7 +47,9 @@ export default class TrackContainerComponent extends Component {
               return (
                 <TrackItemComponent
                   key={ track['trackName'] }
-                  track={ track } />
+                  track={ track }
+                  isSelected={  collectionTrackSet.has(track['trackName']) }
+                  onSelectTrack={ onSelectTrack } />
               );
             })
           }

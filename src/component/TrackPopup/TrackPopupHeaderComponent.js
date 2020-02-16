@@ -9,6 +9,7 @@ export default class TrackPopupHeaderComponent extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onClose = this.onClose.bind(this);
+    this.onCheck = this.onCheck.bind(this);
   }
 
   onChange() {
@@ -21,8 +22,15 @@ export default class TrackPopupHeaderComponent extends Component {
     onClose();
   }
 
+  onCheck(trackType, isChecked) {
+    const { onCheck } = this.props;
+    if (onCheck) {
+      onCheck(trackType, isChecked);
+    }
+  }
+
   render() {
-    const { name } = this.props;
+    const { name, trackTypeCheckbox } = this.props;
 
     return (
       <div className='kartrider-track-popup-header-component'>
@@ -43,9 +51,18 @@ export default class TrackPopupHeaderComponent extends Component {
             테마선택
           </div>
           <div className='track-theme-selector'>
-            <TrackThemeCheckboxComponent name={ '스피드' } />
-            <TrackThemeCheckboxComponent name={ '아이템' } />
-            <TrackThemeCheckboxComponent name={ '전체' } />
+            <TrackThemeCheckboxComponent
+              name={ '스피드' }
+              isChecked={ trackTypeCheckbox['speed'] }
+              onChange={ this.onCheck }/>
+            <TrackThemeCheckboxComponent
+              name={ '아이템' }
+              isChecked={ trackTypeCheckbox['item'] }
+              onChange={ this.onCheck }/>
+            <TrackThemeCheckboxComponent
+              name={ '전체' }
+              isChecked={ trackTypeCheckbox['all'] }
+              onChange={ this.onCheck }/>
           </div>
         </div>
       </div>

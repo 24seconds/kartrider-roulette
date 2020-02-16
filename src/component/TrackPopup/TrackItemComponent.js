@@ -8,17 +8,31 @@ export default class TrackItemComponent extends Component {
     this.state = {
       dotArray: [0,1,2,3,4]
     };
+
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    const {
+      track = null,
+      isSelected = false,
+      onSelectTrack
+    } = this.props;
+
+    if (onSelectTrack) {
+      onSelectTrack(track, !isSelected);
+    }
   }
 
   render() {
-    const { track = null } = this.props;
+    const { track = null, isSelected = false } = this.props;
     const { dotArray } = this.state;
 
     return (
       track &&
       <div className='kartrider-track-item-component'>
-        {/* selected or not */}
-        <div className='border'>
+        <div className={ `border ${ isSelected ? 'selected' : '' }` }
+          onClick={ this.onClick }>
           <div className='track-difficulty'>
             <div className='text'>
               난이도
@@ -28,11 +42,11 @@ export default class TrackItemComponent extends Component {
                 dotArray.map(i => {
                   if (i <= track['difficulty'] - 1) {
                     return (
-                      <div className='dot on'></div>
+                      <div key={ i } className='dot on'></div>
                     );
                   } else {
                     return (
-                      <div className='dot'></div>
+                      <div key={ i } className='dot'></div>
                     );
                   }
                 })
