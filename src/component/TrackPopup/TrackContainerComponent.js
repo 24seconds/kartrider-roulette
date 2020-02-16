@@ -32,6 +32,19 @@ export default class TrackContainerComponent extends Component {
 
   async getTrackList(theme) {
     const trackList = await IndexedDbManager.getTrackByTheme(theme);
+
+    trackList.sort((a, b) => {
+      if (a['isReverse'] && !b['isReverse']) {
+        return 1;
+      }
+
+      if (!a['isReverse'] && b['isReverse']) {
+        return -1;
+      }
+
+      return b['difficulty'] - a['difficulty'];
+    });
+
     return trackList;
   }
 
