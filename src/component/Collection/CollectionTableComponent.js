@@ -17,9 +17,15 @@ export default class CollectionTableComponent extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onDetail = this.onDetail.bind(this);
+    this.onCreateCollection = this.onCreateCollection.bind(this);
+    this.onDeleteCollection = this.onDeleteCollection.bind(this);
   }
 
   async componentDidMount() {
+    await this.getAllColection();
+  }
+
+  async getAllColection() {
     const collectionList = await IndexedDbManager.getAllColection();
     const collectionObject = {};
 
@@ -36,6 +42,11 @@ export default class CollectionTableComponent extends Component {
     this.setState({
       searchText: event.target.value,
     });
+  }
+
+  async onDeleteCollection(collection) {
+    await IndexedDbManager.deleteCollection(collection['id']);
+    await this.getAllColection();
   }
 
   async onDetail(isTableHidden, selectedCollectionId = null) {
@@ -56,6 +67,11 @@ export default class CollectionTableComponent extends Component {
     this.setState(stateToUpdate);
   }
 
+  async onCreateCollection() {
+    await IndexedDbManager.createCollection();
+    await this.getAllColection();
+  }
+
   render() {
     const {
       isTableHidden, collectionObject, selectedTrackList
@@ -69,22 +85,33 @@ export default class CollectionTableComponent extends Component {
               <div className='collection-checkbox'>
                 <CheckBoxComponent />
               </div>
-              <div className='collection-header-title' >컬렉션 이름</div>
+              <div className='collection-header-title'>
+                <div className='header-text'>
+                  컬렉션 이름
+                </div>
+                <div className='collection-util'>
+                  <button> 제거 </button>
+                  <button onClick={ this.onCreateCollection }>
+                    추가
+                  </button>
+                </div>
+              </div>
             </div>
             <div className='collection-list-body'>
-              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+              {/* <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
               <CollectionItemComponent
                 onClick={ this.onTableVisibilityChange }
                 name={ '형독 컬렉션! 글자가 엄청 길어질때는 이걸 어떻게 처리해주어야 할지 잘 모르겠는데?' } />
               <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
               <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
               <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
-              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
+              <CollectionItemComponent onClick={ this.onTableVisibilityChange } /> */}
               {
                 Object.values(collectionObject).map(collection => {
                   return (
                     <CollectionItemComponent
                       onClick={ this.onDetail }
+                      onDelete={ this.onDeleteCollection }
                       key= { `key-${collection.id}` }
                       collection={ collection }/>
                   );

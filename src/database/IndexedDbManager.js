@@ -176,6 +176,47 @@ class IndexedDBManager {
       }
     });
   }
+
+  async createCollection() {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([OBJECT_STORE_COLLECTION], 'readwrite');
+      const objectStore = transaction.objectStore(OBJECT_STORE_COLLECTION);
+
+      const currentDate = new Date();
+      const hours = `0${currentDate.getHours()}`;
+      const minutes = currentDate.getMinutes();
+      const seconds = currentDate.getSeconds();
+
+      const collectionName =
+        `카트라이더 컬렉션! ${ hours.substring(hours.length - 2, hours.length) }:${ minutes }:${ seconds }`;
+      const newCollection = {
+        "name": collectionName,
+        "createdAt": (new Date()).toISOString(),
+        "trackList": [],
+      };
+      const request = objectStore.add(newCollection);
+
+      request.onsuccess = event => {
+        resolve(true);
+      }
+    });
+  }
+
+  async deleteCollection(key) {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([OBJECT_STORE_COLLECTION], 'readwrite');
+      const objectStore = transaction.objectStore(OBJECT_STORE_COLLECTION);
+      const request = objectStore.delete(key);
+
+      request.onsuccess = _ => {
+        resolve(true);
+      }
+    });
+  }
 }
 
 const idbManagerInstance = new IndexedDBManager();

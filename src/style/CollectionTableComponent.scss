@@ -43,8 +43,38 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
       }
 
       .collection-header-title {
-        display: inline-block;
+        display: flex;
         color: $color-blue;
+        flex-grow: 1;
+        align-items: center;
+        height: 100%;
+
+        .header-text {
+          flex-grow: 1;
+          text-align: left;
+        }
+
+        .collection-util {
+          display: flex;
+          margin-right: 15px;
+
+          button {
+            border: solid 1px $color-track-border;
+            border-radius: 5px;
+            background-color: white;
+            margin: 0px 5px;
+            color: $color-text;
+            font-size: 14px;
+            height: 40px;
+            width: 50px;
+            outline: none;
+
+            &:hover {
+              cursor: pointer;
+              opacity: 0.6;
+            }
+          }
+        }
       }
     }
 

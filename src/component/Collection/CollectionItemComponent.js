@@ -27,7 +27,10 @@ export default class CollectionItemComponent extends Component {
   }
 
   onDeleteItem() {
+    const { collection, onDelete } = this.props;
     console.log('onDeleteItem');
+
+    onDelete(collection);
   }
 
   onDetail() {
