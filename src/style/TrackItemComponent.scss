@@ -12,6 +12,7 @@
 
   .border {
     display: flex;
+    position: relative;
     width: 190px;
     box-sizing: border-box;
     border: solid 3px $color-transparent;
@@ -22,6 +23,65 @@
       border-radius: 9px;
       cursor: pointer;
       opacity: 0.88;
+    }
+
+    .track-difficulty {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      margin: 9px 0px 0px 12px;
+      padding: 2px;
+      color: white;
+      background-color: #00000044;
+a
+      .text {
+        display: inline-block;
+        font-size: 12px;
+        margin-right: 5px;
+      }
+
+      .dot-container {
+        display: flex;
+      }
+
+      .dot {
+        background-color: white;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin: 0px 4px;
+
+        &.on {
+          background-color: red;
+        }
+      }
+    }
+
+    .special {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+
+      &.reverse {
+        color: rgba(255, 0, 0, 0.705);
+        font-size: 32px;
+        transform-origin: 50% 50%;
+        transform: rotate(-15deg);
+      }
+
+      &.crazy {
+        color: #7fff4d;
+        font-size: 38px;
+        transform-origin: 60% 60%;
+        transform: rotate(-30deg);
+      }
     }
   }
 
@@ -42,8 +102,8 @@
 
   .track-name {
     text-align: center;
-    margin-top: 2px;
-    font-size: 12px;
+    margin-bottom: 2px;
+    font-size: 14px;
     // color: $color-black;
     color: $color-text;
     // opacity: 0.7;
