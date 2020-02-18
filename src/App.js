@@ -4,7 +4,6 @@ import './style/index.scss';
 
 import RouletteResultComponent from './component/RouletteResultComponent';
 import PlayRouletteComponent from './component/PlayRouletteComponent';
-import SearchComponent from './component/Search/SearchComponent';
 import CollectionComponent from './component/Collection/CollectionComponent';
 import DataSourceDescripitonComponent from './component/DataSourceDescripitonComponent';
 import './database/IndexedDbManager.js';
@@ -17,7 +16,6 @@ class App extends Component {
         <h3>카트라이더 룰렛!</h3>
         <RouletteResultComponent trackName={ '어비스 스카이라인' } />
         <PlayRouletteComponent />
-        <SearchComponent />
         <DataSourceDescripitonComponent />
         <CollectionComponent />
       </div>
