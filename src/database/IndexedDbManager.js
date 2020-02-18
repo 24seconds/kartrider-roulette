@@ -99,6 +99,26 @@ class IndexedDBManager {
     });
   }
 
+  async getAllTrackList() {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([OBJECT_STORE_TRACK]);
+      const objectStore = transaction.objectStore(OBJECT_STORE_TRACK);
+      const request = objectStore.getAll();
+
+      request.onerror = function(event) {
+        // Handle errors!
+        console.log("onerror, ", event);
+        reject(event);
+      };
+
+      request.onsuccess = function(event) {
+        resolve(event.target.result);
+      };
+    });
+  }
+
   async getTrackList(keys) {
     await this.tryOpen();
 
@@ -177,6 +197,10 @@ class IndexedDBManager {
     });
   }
 
+  formatTwoDigit(time) {
+    return time.substring(time.length - 2, time.length);
+  }
+
   async createCollection() {
     await this.tryOpen();
 
@@ -186,11 +210,11 @@ class IndexedDBManager {
 
       const currentDate = new Date();
       const hours = `0${currentDate.getHours()}`;
-      const minutes = currentDate.getMinutes();
-      const seconds = currentDate.getSeconds();
+      const minutes = `0${currentDate.getMinutes()}`;
+      const seconds = `0${currentDate.getSeconds()}`;
 
       const collectionName =
-        `카트라이더 컬렉션! ${ hours.substring(hours.length - 2, hours.length) }:${ minutes }:${ seconds }`;
+        `카트라이더 컬렉션! ${ this.formatTwoDigit(hours) }:${ this.formatTwoDigit(minutes) }:${ this.formatTwoDigit(seconds) }`;
       const newCollection = {
         "name": collectionName,
         "createdAt": (new Date()).toISOString(),
