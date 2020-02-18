@@ -9,19 +9,19 @@ export default class TrackPopupFooterComponent extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit() {
-    // store collection in IDB
-    // check collection title is filled or not
-    this.props.onClose();
+  onSubmit(isSubmit) {
+    this.props.onClose(isSubmit);
   }
 
   render() {
     return (
       <div className='kartrider-track-popup-footer-component'>
-        <button className='footer-okay' onClick={ this.onSubmit }>
+        <button className='footer-okay'
+          onClick={ this.onSubmit.bind(this, true) }>
           선택
         </button>
-        <button className='footer-close' onClick={ this.props.onClose }>
+        <button className='footer-close'
+          onClick={ this.onSubmit.bind(this, false) }>
           취소
         </button>
       </div>

@@ -7,3 +7,5 @@ export const defaultTrackType = {
 export const defaultScheme = {
   'd': 'd',
 };
+
+export const UPDATE_COLLECTION = 'UPDATE_COLLECTION';

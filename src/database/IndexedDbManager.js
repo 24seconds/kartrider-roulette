@@ -228,6 +228,20 @@ class IndexedDBManager {
     });
   }
 
+  async updateCollection(collection) {
+    await this.tryOpen();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([OBJECT_STORE_COLLECTION], 'readwrite');
+      const objectStore = transaction.objectStore(OBJECT_STORE_COLLECTION);
+      const request = objectStore.put(collection);
+
+      request.onsuccess = _ => {
+        resolve(true);
+      }
+    });
+  }
+
   async deleteCollection(key) {
     await this.tryOpen();
 

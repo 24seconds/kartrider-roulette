@@ -4,6 +4,7 @@ import TrackContainerComponent from './TrackContainerComponent';
 import TrackPopupHeaderComponent from './TrackPopupHeaderComponent';
 import TrackPopupFooterComponent from './TrackPopupFooterComponent';
 import IndexedDbManager from '../../database/IndexedDbManager';
+import { UPDATE_COLLECTION } from '../../database/constant';
 
 export default class TrackPopupComponent extends Component {
   constructor(props) {
@@ -18,13 +19,15 @@ export default class TrackPopupComponent extends Component {
         speed: false,
         item: false,
         all: false,
-      }
+      },
+      collectionName: '',
     };
 
     this.onSelectTheme = this.onSelectTheme.bind(this);
     this.onSelectTrack = this.onSelectTrack.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onCheck = this.onCheck.bind(this);
+    this.onInputValueChange = this.onInputValueChange.bind(this);
   }
 
   static open(props) {
@@ -32,21 +35,82 @@ export default class TrackPopupComponent extends Component {
       const component = React.createElement(
         this, { ...props, resolve }, null);
       ReactDOM.render(component, document.getElementById('popup-root'));
-    })
+    });
 
     return promise;
   }
 
-  close() {
-    const popupRoot = document.getElementById('popup-root');
-    ReactDOM.unmountComponentAtNode(popupRoot);
+  close(isSubmit) {
+    const { resolve, collection } = this.props;
+    const emptyValue = {
+      action: null,
+    };
+
+    try {
+      if (isSubmit) {
+        const diff = this.getDiffCollection();
+        const value = ((diff, collection) => {
+          if (Object.keys(diff).length) {
+            return {
+              action: UPDATE_COLLECTION,
+              payload: {
+                ...collection,
+                ...diff
+              }
+            }
+          } else {
+            return {
+              action: null,
+            };
+          }
+        })(diff, collection);
+
+        resolve(value);
+      } else {
+        resolve(emptyValue);
+      }
+    } catch (error) {
+      resolve(emptyValue);
+    } finally {
+      const popupRoot = document.getElementById('popup-root');
+      ReactDOM.unmountComponentAtNode(popupRoot);
+    }
   }
 
-  onClose() {
+  getDiffCollection() {
+    const { collection } = this.props;
+    const { collectionName, collectionTrackSet } = this.state;
+    const payload = {};
+
+
+    if (collection['name'] !== collectionName) {
+      payload['name'] = collectionName;
+    }
+
+    if (collection['trackList'].length !== collectionTrackSet.size) {
+      payload['trackList'] = [...collectionTrackSet];
+    } else {
+      const arr = collection['trackList'].filter(track => collectionTrackSet.has(track));
+
+      if (arr.length !== collectionTrackSet.size) {
+        payload['trackList'] = [...collectionTrackSet];
+      }
+    }
+
+    return payload;
+  }
+
+  onInputValueChange(event) {
+    this.setState({
+      collectionName: event.target.value,
+    });
+  }
+
+  onClose(isSubmit = false) {
     console.log('onClose');
     // resovle here;
     // resolve('some value')
-    this.close();
+    this.close(isSubmit);
   }
 
   onCheck(trackType, isChecked) {
@@ -106,7 +170,12 @@ export default class TrackPopupComponent extends Component {
     const selectedTrackList = await this.getTrackList(theme['themeName']);
     this.setState({
       selectedTheme: theme,
-      selectedTrackList
+      selectedTrackList,
+      trackTypeCheckbox: {
+        speed: false,
+        item: false,
+        all: false,
+      },
     });
   }
 
@@ -140,27 +209,29 @@ export default class TrackPopupComponent extends Component {
       collectionTrackSet: new Set(collection['trackList']),
       themeList,
       selectedTheme,
-      selectedTrackList
+      selectedTrackList,
+      collectionName: collection['name'],
     });
   }
 
   render() {
-    const { collection } = this.props;
     const {
       themeList,
       collectionTrackSet,
       selectedTheme,
       selectedTrackList,
       trackTypeCheckbox,
+      collectionName,
     } = this.state;
 
     return (
       <div className='kartrider-track-popup-component'>
         <div className='track-popup-container'>
           <TrackPopupHeaderComponent
-            name={ collection['name'] }
+            name={ collectionName }
             onCheck={ this.onCheck }
             onClose={ this.onClose }
+            onChange={ this.onInputValueChange }
             trackTypeCheckbox={ trackTypeCheckbox } />
           <TrackContainerComponent
             themeList={ themeList }

@@ -19,6 +19,7 @@ export default class CollectionTableComponent extends Component {
     this.onDetail = this.onDetail.bind(this);
     this.onCreateCollection = this.onCreateCollection.bind(this);
     this.onDeleteCollection = this.onDeleteCollection.bind(this);
+    this.getAllColection = this.getAllColection.bind(this);
   }
 
   async componentDidMount() {
@@ -78,7 +79,7 @@ export default class CollectionTableComponent extends Component {
     } = this.state;
 
     return (
-      <div className='kartrider-collection-table-component' tabIndex='-1'>
+      <div className='kartrider-collection-table-component'>
         <div className='collection-container'>
           <div className={ `collection-list ` + (isTableHidden ? 'hidden' : 'show') } >
             <div className='collection-list-header'>
@@ -112,6 +113,7 @@ export default class CollectionTableComponent extends Component {
                     <CollectionItemComponent
                       onClick={ this.onDetail }
                       onDelete={ this.onDeleteCollection }
+                      syncCollection={ this.getAllColection }
                       key= { `key-${collection.id}` }
                       collection={ collection }/>
                   );

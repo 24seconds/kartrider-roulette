@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
 import { IMAGE_URL } from '../../redux/store';
 import TrackPopupComponent from '../TrackPopup/TrackPopupComponent';
+import { UPDATE_COLLECTION } from '../../database/constant';
+import IndexedDbManager from '../../database/IndexedDbManager';
 
 
 export default class CollectionItemComponent extends Component {
@@ -19,11 +21,18 @@ export default class CollectionItemComponent extends Component {
   }
 
   async onEditItem() {
-    const { collection } = this.props;
+    const { collection, syncCollection } = this.props;
 
     const result = await TrackPopupComponent.open({
       collection,
     });
+
+    if (result['action'] === UPDATE_COLLECTION) {
+      const collection = result['payload'];
+
+      await IndexedDbManager.updateCollection(collection);
+      await syncCollection();
+    }
   }
 
   onDeleteItem() {

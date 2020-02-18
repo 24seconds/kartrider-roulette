@@ -7,13 +7,8 @@ export default class TrackPopupHeaderComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.onChange = this.onChange.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onCheck = this.onCheck.bind(this);
-  }
-
-  onChange() {
-
   }
 
   onClose() {
@@ -30,7 +25,7 @@ export default class TrackPopupHeaderComponent extends Component {
   }
 
   render() {
-    const { name, trackTypeCheckbox } = this.props;
+    const { name, trackTypeCheckbox, onChange } = this.props;
 
     return (
       <div className='kartrider-track-popup-header-component'>
@@ -40,7 +35,7 @@ export default class TrackPopupHeaderComponent extends Component {
               type='text'
               placeholder='컬렉션 이름 ex) 나만의 컬렉션'
               value={ name }
-              onChange={ this.onChange } />
+              onChange={ onChange } />
           </div>
           <button className='track-popup-close' onClick={ this.onClose }>
             <img src={ `${IMAGE_URL}/close.png` } alt='track popup close'/>
