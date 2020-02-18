@@ -18,7 +18,23 @@
     border: solid 3px $color-transparent;
     border-radius: 5px;
 
-    &:hover, &.selected {
+    &.selected {
+      border: solid 3px $color-bd-selected;
+      border-radius: 9px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $color-track-selected;
+        z-index: 10;
+      }
+    }
+
+    &:hover {
       border: solid 3px $color-bd-selected;
       border-radius: 9px;
       cursor: pointer;
@@ -97,6 +113,7 @@ a
     img {
       display: block;
       width: 100%;
+      pointer-events: none;
     }
   }
 
