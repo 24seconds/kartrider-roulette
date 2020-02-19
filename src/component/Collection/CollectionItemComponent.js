@@ -61,7 +61,11 @@ class CollectionItemComponent extends Component {
 
   onDeleteItem() {
     const { collection, onDelete } = this.props;
-    console.log('onDeleteItem');
+    const { isChecked } = this.state;
+
+    if (isChecked) {
+      this.props.dispatch(deleteRouletteSet(collection['trackList']));
+    }
 
     onDelete(collection);
   }
