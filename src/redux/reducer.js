@@ -4,28 +4,41 @@ import {
   DELETE_ROULETTE_SET,
   UPDATE_ROULETTE_RESULT,
 } from "./actionType";
+import {
+  ROULETTE_RESULT_PLACEHOLDER,
+} from '../database/constant';
 
-const initialRouletteSet = new Set(['병마용', '스카이 라인', '고가', '대저택', '사빙공']);
+const initialRouletteSet = {};
 
 function rouletteSet(state = initialRouletteSet, action) {
   if (action.type === ADD_ROULETTE_SET) {
-    const newSet = new Set();
-    state.forEach(value => newSet.add(value));
-    action.payload.forEach(track => newSet.add(track));
+    const newState = { ...state };
 
-    return newSet;
+    action.payload.forEach(track => {
+      newState[track] = newState[track] || 0;
+      newState[track] += 1;
+    });
+
+    return newState;
   } else if (action.type === DELETE_ROULETTE_SET) {
-    const newSet = new Set();
-    state.forEach(value => newSet.add(value));
-    action.payload.forEach(track => newSet.add(track));
+    const newState = { ...state };
 
-    return newSet;
+    action.payload.forEach(track => {
+      newState[track] = newState[track] || 0;
+      newState[track] -= 1;
+
+      if (newState[track] <= 0) {
+        delete newState[track];
+      }
+    });
+
+    return newState;
   }
 
   return state;
 }
 
-function rouletteResult(state = 'Default initial Result', action) {
+function rouletteResult(state = ROULETTE_RESULT_PLACEHOLDER, action) {
   if (action.type === UPDATE_ROULETTE_RESULT) {
     return action.payload;
   }

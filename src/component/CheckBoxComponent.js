@@ -12,6 +12,12 @@ export default class CheckBoxComponent extends Component {
   }
 
   onClick() {
+    const { onClick } = this.props;
+
+    if (onClick) {
+      onClick(!this.state.isChecked);
+    }
+
     this.setState({
       isChecked: !this.state.isChecked,
     });

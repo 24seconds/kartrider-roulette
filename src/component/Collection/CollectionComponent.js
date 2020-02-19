@@ -6,7 +6,7 @@ export default class CollectionComponent extends Component {
     return (
       <div className='kartrider-collection-component'>
         <div>
-          <p> Collection </p>
+          <p> 룰렛 컬렉션! </p>
         </div>
         <CollectionTableComponent />
       </div>

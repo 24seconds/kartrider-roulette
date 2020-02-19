@@ -14,6 +14,10 @@ export const deleteRouletteSet = trackList => ({
   payload: trackList,
 });
 
+export const deleteAllRouletteSet = _ => ({
+  type: DELETE_ROULETTE_SET
+});
+
 export const updateRoulletteResult = track => ({
   type: UPDATE_ROULETTE_RESULT,
   payload: track,
