@@ -14,6 +14,7 @@ class CollectionItemComponent extends Component {
 
     this.state = {
       collectionName: '형독 컬렉션!',
+      isChecked: false,
       // objectStoreData should be used
     };
 
@@ -25,15 +26,21 @@ class CollectionItemComponent extends Component {
 
   async onEditItem() {
     const { collection, syncCollection } = this.props;
+    const { isChecked } = this.state;
 
     const result = await TrackPopupComponent.open({
       collection,
     });
 
     if (result['action'] === UPDATE_COLLECTION) {
-      const collection = result['payload'];
+      const updatedCollection = result['payload'];
 
-      await IndexedDbManager.updateCollection(collection);
+      if (isChecked) {
+        this.props.dispatch(deleteRouletteSet(collection['trackList']));
+        this.props.dispatch(addRouletteSet(updatedCollection['trackList']));
+      }
+
+      await IndexedDbManager.updateCollection(updatedCollection);
       await syncCollection();
     }
   }
@@ -46,6 +53,10 @@ class CollectionItemComponent extends Component {
     } else {
       this.props.dispatch(deleteRouletteSet(collection['trackList']));
     }
+
+    this.setState({
+      isChecked
+    });
   }
 
   onDeleteItem() {
@@ -62,13 +73,15 @@ class CollectionItemComponent extends Component {
   }
 
   render() {
-    const { collectionName } = this.state;
+    const { collectionName, isChecked } = this.state;
     const { collection } = this.props;
 
     return (
       <div className='kartrider-collection-item-component'>
         <div className='collection-item-checkbox'>
-          <CheckBoxComponent onClick={ this.onSelectCollection } />
+          <CheckBoxComponent
+            isChecked={ isChecked }
+            onClick={ this.onSelectCollection } />
         </div>
         <div className='collection-data'>
           <div>
