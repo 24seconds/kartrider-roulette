@@ -4,28 +4,20 @@ export default class CheckBoxComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isChecked: false,
-    };
-
     this.onClick = this.onClick.bind(this);
   }
 
   onClick() {
-    const { onClick } = this.props;
+    const { onClick, isChecked } = this.props;
 
     if (onClick) {
-      onClick(!this.state.isChecked);
+      onClick(!isChecked);
     }
-
-    this.setState({
-      isChecked: !this.state.isChecked,
-    });
   }
 
 
   render() {
-    const { isChecked } = this.state;
+    const { isChecked } = this.props;
 
     return (
       <div className='kartrider-checkbox-component' onClick={ this.onClick }>
