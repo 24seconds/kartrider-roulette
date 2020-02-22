@@ -1,5 +1,20 @@
-#roulette-result-component {
+.roulette-result-component {
   font-size: 20px;
   border: solid 1px black;
   margin: 16px;
+
+  .roulette-result {
+    position: relative;
+    overflow: hidden;
+    height: 30px;
+  }
+
+  .roulette-container {
+    position: absolute;
+    width: 100%;
+
+    div {
+      height: 30px;
+    }
+  }
 }

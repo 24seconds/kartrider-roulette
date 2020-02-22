@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateRoulletteResult } from '../redux/action';
-import { ROULETTE_RESULT_GUIDE } from '../database/constant';
+import { updateRoulletteResult } from '../../redux/action';
+import { ROULETTE_RESULT_GUIDE } from '../../database/constant';
 
 class PlayRouletteComponent extends Component {
 
