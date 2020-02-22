@@ -8,6 +8,7 @@ export default class CollectionDetailItemComponent extends Component {
 
     this.state = {
       trackList: [],
+      themeList: [],
     }
 
     this.onClick = this.onClick.bind(this);
@@ -22,8 +23,18 @@ export default class CollectionDetailItemComponent extends Component {
 
   }
 
+  async componentDidMount() {
+    const themeList = await IndexedDbManager.getAllThemeList();
+    themeList.sort((a, b) => b['themeOrder'] - a['themeOrder']);
+
+    this.setState({
+      themeList,
+    });
+  }
+
   render() {
     const { trackList } = this.props;
+    const { themeList } = this.state;
 
     return (
       <div className='kartrider-collection-detail-item-component' onClick={ this.onClick }>
@@ -37,18 +48,25 @@ export default class CollectionDetailItemComponent extends Component {
         </h3>
         <div className='collection-detail-track-container'>
           {
-            trackList.map(track => {
-              return (
-                <div key={ `key-detail-${track['trackName']}` } className='collection-detail-track'>
-                  <img src={ `${IMAGE_URL}/theme/${track.theme}.png` } alt="track icon" />
-                  <div>
-                    { track['trackName'] }
+            themeList.map(theme => {
+              const tracks = trackList[theme['themeName']] || [];
+              if (!tracks.length) {
+                return null;
+              }
+
+              return tracks.map(track => {
+                return (
+                  <div key={ `key-detail-${track['trackName']}` } className='collection-detail-track'>
+                    <img src={ `${IMAGE_URL}/theme/${track.theme}.png` } alt="track icon" />
+                    <div>
+                      { track['trackName'] }
+                    </div>
+                    <button className='collection-detail-delete' onClick={ this.onDeleteItem }>
+                      <img src={ `${IMAGE_URL}/icon_delete.svg` } alt="delete icon" />
+                    </button>
                   </div>
-                  <button className='collection-detail-delete' onClick={ this.onDeleteItem }>
-                    <img src={ `${IMAGE_URL}/icon_delete.svg` } alt="delete icon" />
-                  </button>
-                </div>
-              );
+                );
+              })
             })
           }
         </div>

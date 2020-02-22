@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import CollectionItemComponent from './CollectionItemComponent';
 import CollectionDetailItemComponent from './CollectionDetailItemComponent';
 import CheckBoxComponent from '../CheckBoxComponent';
@@ -12,7 +12,7 @@ export default class CollectionTableComponent extends Component {
       searchText: 'This is search component!',
       isTableHidden: false,
       collectionObject: {},
-      selectedTrackList: [],
+      selectedTrackList: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -61,7 +61,15 @@ export default class CollectionTableComponent extends Component {
       const collection = collectionObject[selectedCollectionId];
       if (collection) {
         const trackList = await IndexedDbManager.getTrackList(collection['trackList']);
-        stateToUpdate['selectedTrackList'] = trackList;
+
+        const object = trackList.reduce((acc, track) => {
+          acc[track['theme']] = acc[track['theme']] || [];
+          acc[track['theme']] = [...acc[track['theme']], track];
+
+          return acc;
+        }, {});
+
+        stateToUpdate['selectedTrackList'] = object;
       }
     })();
 
@@ -114,7 +122,7 @@ export default class CollectionTableComponent extends Component {
                       onClick={ this.onDetail }
                       onDelete={ this.onDeleteCollection }
                       syncCollection={ this.getAllColection }
-                      key= { `key-${collection.id}` }
+                      key={ `key-${collection.id}` }
                       collection={ collection }/>
                   );
                 })
