@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import {
   ADD_ROULETTE_SET,
   DELETE_ROULETTE_SET,
+  DELETE_ALL_ROULETTE_SET,
   UPDATE_ROULETTE_RESULT,
 } from "./actionType";
 import {
@@ -33,6 +34,8 @@ function rouletteSet(state = initialRouletteSet, action) {
     });
 
     return newState;
+  } else if (action.type === DELETE_ALL_ROULETTE_SET) {
+    return {};
   }
 
   return state;

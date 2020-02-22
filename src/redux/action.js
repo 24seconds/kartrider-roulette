@@ -1,6 +1,7 @@
 import {
   ADD_ROULETTE_SET,
   DELETE_ROULETTE_SET,
+  DELETE_ALL_ROULETTE_SET,
   UPDATE_ROULETTE_RESULT,
 } from './actionType';
 
@@ -15,7 +16,7 @@ export const deleteRouletteSet = trackList => ({
 });
 
 export const deleteAllRouletteSet = _ => ({
-  type: DELETE_ROULETTE_SET
+  type: DELETE_ALL_ROULETTE_SET
 });
 
 export const updateRoulletteResult = track => ({

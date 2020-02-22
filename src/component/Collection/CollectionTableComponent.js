@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import CollectionItemComponent from './CollectionItemComponent';
 import CollectionDetailItemComponent from './CollectionDetailItemComponent';
 import CheckBoxComponent from '../CheckBoxComponent';
 import IndexedDbManager from '../../database/IndexedDbManager';
+import {
+  addRouletteSet,
+  deleteAllRouletteSet,
+} from '../../redux/action';
 
-export default class CollectionTableComponent extends Component {
+class CollectionTableComponent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       searchText: 'This is search component!',
       isTableHidden: false,
+      isAllChecked: false,
       collectionObject: {},
+      collectionCheckedObject: {},
       selectedTrackList: {},
     };
 
@@ -19,6 +26,7 @@ export default class CollectionTableComponent extends Component {
     this.onDetail = this.onDetail.bind(this);
     this.onCreateCollection = this.onCreateCollection.bind(this);
     this.onDeleteCollection = this.onDeleteCollection.bind(this);
+    this.onSelectCollection = this.onSelectCollection.bind(this);
     this.getAllColection = this.getAllColection.bind(this);
   }
 
@@ -81,9 +89,56 @@ export default class CollectionTableComponent extends Component {
     await this.getAllColection();
   }
 
+  onSelectCollection(isChecked, collectionId = 'all') {
+    const { collectionCheckedObject, collectionObject } = this.state;
+    const nextCollectionCheckedObject = { ...collectionCheckedObject };
+
+    if (collectionId === 'all') {
+      // select all!
+      Object.keys(collectionObject).forEach(collectionId => {
+        nextCollectionCheckedObject[collectionId] = isChecked;
+      });
+
+      if (isChecked) {
+        const collectionTrackList = ((collectionObject) => {
+           const trackSet = new Set();
+
+           Object.values(collectionObject).forEach(collection => {
+             collection['trackList'].forEach(track => {
+               trackSet.add(track);
+             });
+           });
+
+           return [...trackSet];
+        })(collectionObject);
+
+        this.props.dispatch(deleteAllRouletteSet());
+        this.props.dispatch(addRouletteSet(collectionTrackList));
+      } else {
+        this.props.dispatch(deleteAllRouletteSet());
+      }
+
+      this.setState({
+        isAllChecked: isChecked,
+        collectionCheckedObject: nextCollectionCheckedObject
+      });
+
+      return;
+    } else {
+      nextCollectionCheckedObject[collectionId] = isChecked;
+      this.setState({
+        collectionCheckedObject: nextCollectionCheckedObject
+      });
+    }
+  }
+
   render() {
     const {
-      isTableHidden, collectionObject, selectedTrackList
+      isTableHidden,
+      isAllChecked,
+      collectionObject,
+      selectedTrackList,
+      collectionCheckedObject
     } = this.state;
 
     return (
@@ -92,7 +147,9 @@ export default class CollectionTableComponent extends Component {
           <div className={ `collection-list ` + (isTableHidden ? 'hidden' : 'show') } >
             <div className='collection-list-header'>
               <div className='collection-checkbox'>
-                <CheckBoxComponent />
+                <CheckBoxComponent
+                  isChecked={ isAllChecked }
+                  onClick={ this.onSelectCollection } />
               </div>
               <div className='collection-header-title'>
                 <div className='header-text'>
@@ -121,9 +178,11 @@ export default class CollectionTableComponent extends Component {
                     <CollectionItemComponent
                       onClick={ this.onDetail }
                       onDelete={ this.onDeleteCollection }
+                      onCheck={ this.onSelectCollection }
                       syncCollection={ this.getAllColection }
                       key={ `key-${collection.id}` }
-                      collection={ collection }/>
+                      collection={ collection }
+                      isChecked={ !!collectionCheckedObject[collection['id']] }/>
                   );
                 })
               }
@@ -139,3 +198,5 @@ export default class CollectionTableComponent extends Component {
     );
   }
 }
+
+export default connect()(CollectionTableComponent);
