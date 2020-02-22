@@ -11,16 +11,20 @@ export default class CollectionDetailItemComponent extends Component {
       themeList: [],
     }
 
-    this.onClick = this.onClick.bind(this);
     this.onBack = this.onBack.bind(this);
-  }
-
-  onClick() {
-    this.props.onClick(false, null);
+    this.onDeleteItem = this.onDeleteItem.bind(this);
   }
 
   onBack() {
+    this.props.onClick(false, null);
+  }
 
+  onDeleteItem(trackName) {
+    const { collectionId, onDelete } = this.props;
+
+    if (onDelete) {
+      onDelete(collectionId, trackName);
+    }
   }
 
   async componentDidMount() {
@@ -37,7 +41,7 @@ export default class CollectionDetailItemComponent extends Component {
     const { themeList } = this.state;
 
     return (
-      <div className='kartrider-collection-detail-item-component' onClick={ this.onClick }>
+      <div className='kartrider-collection-detail-item-component'>
         <h3 className='collection-detail-title' >
           <div>
             선택된 트랙
@@ -61,7 +65,7 @@ export default class CollectionDetailItemComponent extends Component {
                     <div>
                       { track['trackName'] }
                     </div>
-                    <button className='collection-detail-delete' onClick={ this.onDeleteItem }>
+                    <button className='collection-detail-delete' onClick={ this.onDeleteItem.bind(this, track['trackName']) }>
                       <img src={ `${IMAGE_URL}/icon_delete.svg` } alt="delete icon" />
                     </button>
                   </div>
@@ -76,5 +80,5 @@ export default class CollectionDetailItemComponent extends Component {
 }
 
 CollectionDetailItemComponent.defaultProps = {
-  "trackList": [],
+  "trackList": {},
 };

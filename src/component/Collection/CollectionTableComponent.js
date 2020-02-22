@@ -6,6 +6,7 @@ import CheckBoxComponent from '../CheckBoxComponent';
 import IndexedDbManager from '../../database/IndexedDbManager';
 import {
   addRouletteSet,
+  deleteRouletteSet,
   deleteAllRouletteSet,
 } from '../../redux/action';
 
@@ -19,13 +20,17 @@ class CollectionTableComponent extends Component {
       isAllChecked: false,
       collectionObject: {},
       collectionCheckedObject: {},
-      selectedTrackList: {},
+      selectedCollection: {
+        collectionId: -1,
+        trackList: {},
+      }
     };
 
     this.onChange = this.onChange.bind(this);
     this.onDetail = this.onDetail.bind(this);
     this.onCreateCollection = this.onCreateCollection.bind(this);
     this.onDeleteCollection = this.onDeleteCollection.bind(this);
+    this.onDeleteTrack = this.onDeleteTrack.bind(this);
     this.onSelectCollection = this.onSelectCollection.bind(this);
     this.getAllColection = this.getAllColection.bind(this);
   }
@@ -58,14 +63,30 @@ class CollectionTableComponent extends Component {
     await this.getAllColection();
   }
 
-  async onDetail(isTableHidden, selectedCollectionId = null) {
-    console.log("onTableVisibilityChange is called, isTableHidden is ", isTableHidden);
+  async onDeleteTrack(collectionId, trackName) {
     const { collectionObject } = this.state;
-    const stateToUpdate = {
-      isTableHidden,
+    const collection = collectionObject[collectionId];
+
+    const oldTrackList = collection['trackList'];
+    const newTrackList = collection['trackList'].filter(name => name !== trackName);
+
+    this.props.dispatch(deleteRouletteSet(oldTrackList));
+    this.props.dispatch(addRouletteSet(newTrackList));
+
+    const updatedCollection = {
+      ...collection,
+      trackList: newTrackList,
     };
 
-    await (async () => {
+    await IndexedDbManager.updateCollection(updatedCollection);
+    await this.getAllColection();
+    await this.syncSelectedCollection(collectionId);
+  }
+
+  async syncSelectedCollection(selectedCollectionId = null) {
+    const { collectionObject } = this.state;
+
+    const selectedCollection = await (async () => {
       const collection = collectionObject[selectedCollectionId];
       if (collection) {
         const trackList = await IndexedDbManager.getTrackList(collection['trackList']);
@@ -77,11 +98,24 @@ class CollectionTableComponent extends Component {
           return acc;
         }, {});
 
-        stateToUpdate['selectedTrackList'] = object;
+        return {
+          collectionId: collection['id'],
+          trackList: object,
+        };
+      } else {
+        return null;
       }
     })();
 
-    this.setState(stateToUpdate);
+    if (selectedCollection) {
+      this.setState({ selectedCollection });
+    }
+  }
+
+  async onDetail(isTableHidden, selectedCollectionId = null) {
+    await this.syncSelectedCollection(selectedCollectionId);
+
+    this.setState({ isTableHidden });
   }
 
   async onCreateCollection() {
@@ -137,7 +171,7 @@ class CollectionTableComponent extends Component {
       isTableHidden,
       isAllChecked,
       collectionObject,
-      selectedTrackList,
+      selectedCollection,
       collectionCheckedObject
     } = this.state;
 
@@ -156,7 +190,6 @@ class CollectionTableComponent extends Component {
                   컬렉션 이름
                 </div>
                 <div className='collection-util'>
-                  <button> 제거 </button>
                   <button onClick={ this.onCreateCollection }>
                     추가
                   </button>
@@ -190,8 +223,10 @@ class CollectionTableComponent extends Component {
           </div>
           <div className={ `detail-component ${ isTableHidden ? 'show' : 'hidden' }` }>
             <CollectionDetailItemComponent
-              trackList={ selectedTrackList }
-              onClick={ this.onDetail } />
+              collectionId={ selectedCollection['collectionId'] }
+              trackList={ selectedCollection['trackList'] }
+              onClick={ this.onDetail }
+              onDelete={ this.onDeleteTrack } />
           </div>
         </div>
       </div>
