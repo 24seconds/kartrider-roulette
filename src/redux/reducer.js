@@ -3,7 +3,6 @@ import {
   ADD_ROULETTE_SET,
   DELETE_ROULETTE_SET,
   DELETE_ALL_ROULETTE_SET,
-  UPDATE_ROULETTE_RESULT,
 } from "./actionType";
 import {
   ROULETTE_RESULT_PLACEHOLDER,
@@ -41,15 +40,6 @@ function rouletteSet(state = initialRouletteSet, action) {
   return state;
 }
 
-function rouletteResult(state = ROULETTE_RESULT_PLACEHOLDER, action) {
-  if (action.type === UPDATE_ROULETTE_RESULT) {
-    return action.payload;
-  }
-
-  return state;
-}
-
 export default combineReducers({
   rouletteSet,
-  rouletteResult,
 });
