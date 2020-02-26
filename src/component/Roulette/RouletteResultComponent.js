@@ -37,10 +37,26 @@ class RouletteResultComponent extends Component {
         [1.0, 1.0]
       ),
       startTime: null,
-      rouletteResult: null
+      rouletteResult: null,
+      isAnimationOn: false,
     };
 
     this.onPlayRoulette = this.onPlayRoulette.bind(this);
+    this.onAnimationToggle = this.onAnimationToggle.bind(this);
+  }
+
+  shuffleFisherYates(array) {
+    const shuffledArray = [...array];
+
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = shuffledArray[i];
+
+      shuffledArray[i] = shuffledArray[j];
+      shuffledArray[j] = temp;
+    }
+
+    return shuffledArray;
   }
 
   getCubicBezierCurve(p1, p2, p3, p4) {
@@ -64,9 +80,17 @@ class RouletteResultComponent extends Component {
     }
   }
 
+  onAnimationToggle() {
+    const { isAnimationOn } = this.state;
+
+    this.setState({
+      isAnimationOn: !isAnimationOn,
+    });
+  }
+
   onPlayRoulette() {
     const { rouletteSet } = this.props;
-    const { displayName, cursor } = this.state;
+    const { displayName, cursor, isAnimationOn } = this.state;
     const trackList = Object.keys(rouletteSet);
     const rouletteResult = trackList[Math.floor(Math.random() * trackList.length)];
 
@@ -81,23 +105,45 @@ class RouletteResultComponent extends Component {
       return;
     }
 
-    const startTime = new Date();
-    setTimeout(() => {
+    if (isAnimationOn) {
+      const shuffledTrackList = this.shuffleFisherYates(trackList);
+
+      const startTime = new Date();
+      setTimeout(() => {
+        this.setState({
+          shouldPrepareStop: true,
+        });
+      }, ROULETTE_ANIMATION_DURATION);
+
       this.setState({
-        shouldPrepareStop: true,
+        displayName: {
+          ...displayName,
+          two: trackList[(cursor + 1) % trackList.length],
+        },
+        startTime,
+        rouletteResult,
       });
-    }, ROULETTE_ANIMATION_DURATION);
 
-    this.setState({
-      displayName: {
-        ...displayName,
-        two: trackList[(cursor + 1) % trackList.length],
-      },
-      startTime,
-      rouletteResult,
-    });
+      requestAnimationFrame(this.animationCallback.bind(this, shuffledTrackList));
+    } else {
+      this.setState({
+        displayName: {
+          ...displayName,
+          one: ' ',
+        },
+        rouletteResult
+      });
 
-    requestAnimationFrame(this.animationCallback.bind(this, trackList));
+      setTimeout(() => {
+        this.setState({
+          displayName: {
+            ...displayName,
+            one: rouletteResult,
+          },
+          rouletteResult: null
+        });
+      }, 200);
+    }
   }
 
   getStyleTransform(pixelAccumulated, iteration, baseTranslation) {
@@ -199,13 +245,15 @@ class RouletteResultComponent extends Component {
   }
 
   render() {
-    const { styleTransform, displayName } = this.state;
+    const {
+      styleTransform,
+      displayName,
+      isAnimationOn,
+      rouletteResult
+    } = this.state;
  
     return (
       <div className='roulette-result-component'>
-        <button onClick={ this.onPlayRoulette }>
-          테스트 requestAnimationFrame
-        </button>
         <div className='roulette-result'>
           <div className='roulette-container' style={ styleTransform['container'] } >
             <div className='zero'>
@@ -216,6 +264,22 @@ class RouletteResultComponent extends Component {
             </div>
             <div className='two'>
               { displayName['two'] }
+            </div>
+          </div>
+        </div>
+        <div className='roulette-util'>
+          <button
+            className='roulette-button'
+            onClick={ this.onPlayRoulette }
+            disabled={ rouletteResult !== null }>
+            Play Roulette!
+          </button>
+          <div className='roulette-animation-on-off' onClick={ this.onAnimationToggle }>
+            <div className='description'> 룰렛 애니메이션 </div>
+            <div className= { `roulette-animation-switch ${ isAnimationOn ? 'on' : 'off' }` }>
+              <div className='slider-container'>
+                <div className={ `slider ${ isAnimationOn ? 'on' : 'off' }` }/>
+              </div>
             </div>
           </div>
         </div>
