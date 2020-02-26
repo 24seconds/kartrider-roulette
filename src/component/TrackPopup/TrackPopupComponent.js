@@ -22,12 +22,14 @@ export default class TrackPopupComponent extends Component {
       },
       collectionName: '',
     };
+    this.divFocus = React.createRef();
 
     this.onSelectTheme = this.onSelectTheme.bind(this);
     this.onSelectTrack = this.onSelectTrack.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onCheck = this.onCheck.bind(this);
     this.onInputValueChange = this.onInputValueChange.bind(this);
+    this.onKeyDownTest = this.onKeyDownTest.bind(this);
   }
 
   static open(props) {
@@ -107,9 +109,6 @@ export default class TrackPopupComponent extends Component {
   }
 
   onClose(isSubmit = false) {
-    console.log('onClose');
-    // resovle here;
-    // resolve('some value')
     this.close(isSubmit);
   }
 
@@ -205,6 +204,8 @@ export default class TrackPopupComponent extends Component {
     const selectedTheme = themeList[0];
     const selectedTrackList = await this.getTrackList(selectedTheme['themeName']);
 
+    this.divFocus.current.focus();
+
     this.setState({
       collectionTrackSet: new Set(collection['trackList']),
       themeList,
@@ -212,6 +213,12 @@ export default class TrackPopupComponent extends Component {
       selectedTrackList,
       collectionName: collection['name'],
     });
+  }
+
+  onKeyDownTest(event) {
+    if (event.type === 'keydown' && event.keyCode === 27) {
+      this.onClose(false);
+    }
   }
 
   render() {
@@ -226,7 +233,10 @@ export default class TrackPopupComponent extends Component {
 
     return (
       <div className='kartrider-track-popup-component'>
-        <div className='track-popup-container'>
+        <div className='track-popup-container'
+          tabIndex="0"
+          ref={ this.divFocus }
+          onKeyDown={ this.onKeyDownTest }>
           <TrackPopupHeaderComponent
             name={ collectionName }
             onCheck={ this.onCheck }

@@ -16,11 +16,11 @@ export default class TrackPopupFooterComponent extends Component {
   render() {
     return (
       <div className='kartrider-track-popup-footer-component'>
-        <button className='footer-okay'
+        <button tabIndex='-1' className='footer-okay'
           onClick={ this.onSubmit.bind(this, true) }>
           선택
         </button>
-        <button className='footer-close'
+        <button tabIndex='-1' className='footer-close'
           onClick={ this.onSubmit.bind(this, false) }>
           취소
         </button>
