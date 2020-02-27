@@ -9,6 +9,7 @@ import {
   deleteRouletteSet,
   deleteAllRouletteSet,
 } from '../../redux/action';
+import { LOCAL_STORAGE_COLLECTION_KEY } from '../../database/constant';
 
 class CollectionTableComponent extends Component {
   constructor(props) {
@@ -36,7 +37,32 @@ class CollectionTableComponent extends Component {
   }
 
   async componentDidMount() {
-    await this.getAllColection();
+    const collectionObject = await this.getAllColection();
+
+    const value = localStorage.getItem(LOCAL_STORAGE_COLLECTION_KEY);
+    if (value) {
+      try {
+        const collectionCheckedObject = JSON.parse(value);
+
+        const nextCollectionCheckedObject = {};
+        const checkedCollectionObject = {};
+
+        Object.keys(collectionObject).forEach(id => {
+          if (collectionCheckedObject[id]) {
+            nextCollectionCheckedObject[id] = collectionCheckedObject[id];
+            checkedCollectionObject[id] = collectionObject[id];
+          }
+        });
+
+        this.setState({
+          collectionCheckedObject: nextCollectionCheckedObject,
+        });
+        this.updateLocalStorage(LOCAL_STORAGE_COLLECTION_KEY, JSON.stringify(nextCollectionCheckedObject));
+        this.updateRouletteSet(checkedCollectionObject);
+      } catch (error) {
+        // error occurred!
+      }
+    }
   }
 
   async getAllColection() {
@@ -50,6 +76,8 @@ class CollectionTableComponent extends Component {
     this.setState({
       collectionObject,
     });
+
+    return collectionObject;
   }
 
   onChange(event) {
@@ -123,6 +151,27 @@ class CollectionTableComponent extends Component {
     await this.getAllColection();
   }
 
+  updateLocalStorage(key, value) {
+    localStorage.setItem(key, value);
+  }
+
+  updateRouletteSet(collectionObject) {
+    const collectionTrackList = ((collectionObject) => {
+      const trackSet = new Set();
+
+      Object.values(collectionObject).forEach(collection => {
+        collection['trackList'].forEach(track => {
+          trackSet.add(track);
+        });
+      });
+
+      return [...trackSet];
+   })(collectionObject);
+
+   this.props.dispatch(deleteAllRouletteSet());
+   this.props.dispatch(addRouletteSet(collectionTrackList));
+  }
+
   onSelectCollection(isChecked, collectionId = 'all') {
     const { collectionCheckedObject, collectionObject } = this.state;
     const nextCollectionCheckedObject = { ...collectionCheckedObject };
@@ -134,20 +183,7 @@ class CollectionTableComponent extends Component {
       });
 
       if (isChecked) {
-        const collectionTrackList = ((collectionObject) => {
-           const trackSet = new Set();
-
-           Object.values(collectionObject).forEach(collection => {
-             collection['trackList'].forEach(track => {
-               trackSet.add(track);
-             });
-           });
-
-           return [...trackSet];
-        })(collectionObject);
-
-        this.props.dispatch(deleteAllRouletteSet());
-        this.props.dispatch(addRouletteSet(collectionTrackList));
+        this.updateRouletteSet(collectionObject);
       } else {
         this.props.dispatch(deleteAllRouletteSet());
       }
@@ -157,12 +193,16 @@ class CollectionTableComponent extends Component {
         collectionCheckedObject: nextCollectionCheckedObject
       });
 
+      this.updateLocalStorage(LOCAL_STORAGE_COLLECTION_KEY, JSON.stringify(nextCollectionCheckedObject));
+
       return;
     } else {
       nextCollectionCheckedObject[collectionId] = isChecked;
       this.setState({
         collectionCheckedObject: nextCollectionCheckedObject
       });
+
+      this.updateLocalStorage(LOCAL_STORAGE_COLLECTION_KEY, JSON.stringify(nextCollectionCheckedObject));
     }
   }
 
@@ -197,14 +237,6 @@ class CollectionTableComponent extends Component {
               </div>
             </div>
             <div className='collection-list-body'>
-              {/* <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
-              <CollectionItemComponent
-                onClick={ this.onTableVisibilityChange }
-                name={ '형독 컬렉션! 글자가 엄청 길어질때는 이걸 어떻게 처리해주어야 할지 잘 모르겠는데?' } />
-              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
-              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
-              <CollectionItemComponent onClick={ this.onTableVisibilityChange } />
-              <CollectionItemComponent onClick={ this.onTableVisibilityChange } /> */}
               {
                 Object.values(collectionObject).map(collection => {
                   return (

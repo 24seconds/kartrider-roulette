@@ -14,3 +14,5 @@ export const ROULETTE_RESULT_GUIDE = '룰렛을 돌릴 컬렉션이 없습니다
 export const ROULETTE_HEIGHT = 30;
 export const ROULETTE_ANIMATION_DURATION = 3000;
 export const ROULETTE_SCALE = 20;
+export const LOCAL_STORAGE_COLLECTION_KEY = "check";
+export const LOCAL_STORAGE_ANIMATION_KEY = "animation";
