@@ -6,6 +6,7 @@ import {
   ROULETTE_RESULT_PLACEHOLDER,
   ROULETTE_RESULT_GUIDE,
   ROULETTE_SCALE,
+  LOCAL_STORAGE_ANIMATION_KEY,
 } from '../../database/constant';
 
 class RouletteResultComponent extends Component {
@@ -43,6 +44,25 @@ class RouletteResultComponent extends Component {
 
     this.onPlayRoulette = this.onPlayRoulette.bind(this);
     this.onAnimationToggle = this.onAnimationToggle.bind(this);
+  }
+
+  componentDidMount() {
+    const value = localStorage.getItem(LOCAL_STORAGE_ANIMATION_KEY);
+    if (value) {
+      try {
+        const { isAnimationOn } = JSON.parse(value);
+
+        this.setState({
+          isAnimationOn
+        });
+      } catch (error) {
+        // error occurred!
+      }
+    }
+  }
+
+  updateLocalStorage(key, value) {
+    localStorage.setItem(key, value);
   }
 
   shuffleFisherYates(array) {
@@ -83,6 +103,7 @@ class RouletteResultComponent extends Component {
   onAnimationToggle() {
     const { isAnimationOn } = this.state;
 
+    this.updateLocalStorage(LOCAL_STORAGE_ANIMATION_KEY, JSON.stringify({ isAnimationOn: !isAnimationOn }));
     this.setState({
       isAnimationOn: !isAnimationOn,
     });
