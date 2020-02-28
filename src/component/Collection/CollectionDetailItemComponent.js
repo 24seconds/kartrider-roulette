@@ -13,6 +13,7 @@ export default class CollectionDetailItemComponent extends Component {
 
     this.onBack = this.onBack.bind(this);
     this.onDeleteItem = this.onDeleteItem.bind(this);
+    this.getTrackLength = this.getTrackLength.bind(this);
   }
 
   onBack() {
@@ -36,6 +37,15 @@ export default class CollectionDetailItemComponent extends Component {
     });
   }
 
+  getTrackLength(trackList) {
+    return Object.values(trackList).reduce((acc, array) => {
+      const arr = array || [];
+      acc += arr.length;
+
+      return acc;
+    }, 0);
+  }
+
   render() {
     const { trackList } = this.props;
     const { themeList } = this.state;
@@ -44,7 +54,7 @@ export default class CollectionDetailItemComponent extends Component {
       <div className='kartrider-collection-detail-item-component'>
         <h3 className='collection-detail-title' >
           <div>
-            선택된 트랙
+            { `선택된 트랙 (${ this.getTrackLength(trackList) })` }
           </div>
           <button className='collection-detail-back' onClick={ this.onBack } >
             <img src={ `${IMAGE_URL}/icon_back.png` } alt="back to collection list icon" />
