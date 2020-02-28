@@ -71,7 +71,6 @@ class CollectionItemComponent extends Component {
   onDetail() {
     const { collection } = this.props;
     this.props.onClick(true, collection['id']);
-    console.log('onDetail');
   }
 
   render() {

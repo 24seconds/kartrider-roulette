@@ -54,8 +54,21 @@ class CollectionTableComponent extends Component {
           }
         });
 
+        const isAllChecked = ((checkedArray, collectionArray) => {
+          if (checkedArray.length === 0) {
+            return false;
+          }
+
+          if (collectionArray.length !== checkedArray.length) {
+            return false;
+          }
+
+          return checkedArray.every(bool => bool);
+        })(Object.values(nextCollectionCheckedObject), Object.keys(collectionObject));
+
         this.setState({
           collectionCheckedObject: nextCollectionCheckedObject,
+          isAllChecked,
         });
         this.updateLocalStorage(LOCAL_STORAGE_COLLECTION_KEY, JSON.stringify(nextCollectionCheckedObject));
         this.updateRouletteSet(checkedCollectionObject);

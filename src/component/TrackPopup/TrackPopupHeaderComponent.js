@@ -12,7 +12,6 @@ export default class TrackPopupHeaderComponent extends Component {
   }
 
   onClose() {
-    console.log('onClose');
     const { onClose } = this.props;
     onClose();
   }

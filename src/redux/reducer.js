@@ -4,13 +4,8 @@ import {
   DELETE_ROULETTE_SET,
   DELETE_ALL_ROULETTE_SET,
 } from "./actionType";
-import {
-  ROULETTE_RESULT_PLACEHOLDER,
-} from '../database/constant';
 
-const initialRouletteSet = {};
-
-function rouletteSet(state = initialRouletteSet, action) {
+function rouletteSet(state = {}, action) {
   if (action.type === ADD_ROULETTE_SET) {
     const newState = { ...state };
 

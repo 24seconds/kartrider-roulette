@@ -54,8 +54,6 @@ class IndexedDBManager {
       const objectStore = db.createObjectStore(OBJECT_STORE_TRACK, { keyPath: 'trackName' });
       db.createObjectStore(OBJECT_STORE_COLLECTION, { keyPath: 'id', autoIncrement: true });
       db.createObjectStore(OBJECT_STORE_THEME, { keyPath: 'themeName' });
-      
-      console.log('onupgradeneeded, objectStore is ', objectStore);
 
       objectStore.createIndex(`index_${OBJECT_STORE_TRACK}_theme`, 'theme', { unique: false });
       objectStore.createIndex(`index_${OBJECT_STORE_TRACK}_trackType`, 'trackType', { unique: false });
