@@ -2,6 +2,13 @@
   text-align: center;
 }
 
+.App > h3 {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0px 0px 20px 0px;
+  color: #1F334A;
+}
+
 .App-header {
   min-height: 100vh;
   display: flex;

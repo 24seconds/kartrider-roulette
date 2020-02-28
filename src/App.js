@@ -5,6 +5,7 @@ import './style/index.scss';
 import RouletteComponent from './component/Roulette/RouletteComponent';
 import CollectionComponent from './component/Collection/CollectionComponent';
 import DataSourceDescripitonComponent from './component/DataSourceDescripitonComponent';
+import FooterComponent from './component/FooterComponent';
 import './database/IndexedDbManager.js';
 
 
@@ -17,6 +18,7 @@ class App extends Component {
         <RouletteComponent />
         <DataSourceDescripitonComponent />
         <CollectionComponent />
+        <FooterComponent />
       </div>
     );
   }

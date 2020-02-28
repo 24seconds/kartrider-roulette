@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TrackThemeCheckboxComponent from './TrackThemeCheckboxComponent';
-import { IMAGE_URL } from '../../redux/store';
+import { IMAGE_URL } from '../../database/constant';
 
 
 export default class TrackPopupHeaderComponent extends Component {

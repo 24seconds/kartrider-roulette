@@ -19,6 +19,7 @@
     grid-row-gap: 8px;
     padding: 6px;
     overflow-y: scroll;
+    scroll-behavior: smooth;
 
     border: solid 1px $color-track-border;
     border-radius: 5px;

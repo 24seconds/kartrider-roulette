@@ -6,7 +6,6 @@ export default class RouletteComponent extends Component {
  
     return (
       <div className='kartrider-roulette-component'>
-        <div>룰렛컴포넌트</div>
         <RouletteResultComponent/>
       </div>
     );

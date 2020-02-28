@@ -1,11 +1,19 @@
+$roulette-height: 30px;
+
 .roulette-result-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-size: 20px;
-  margin: 16px;
+  margin: 8px;
 
   .roulette-result {
+    width: 600px;
+    display: flex;
+    justify-content: center;
     position: relative;
     overflow: hidden;
-    height: 30px;
+    height: $roulette-height;
     border: solid 1px black;
   }
 
@@ -14,16 +22,17 @@
     width: 100%;
 
     div {
-      height: 30px;
+      height: $roulette-height;
     }
   }
 
   .roulette-util {
     display: flex;
+    width: 600px;
     align-items: center;
     justify-content: center;
     position: relative;
-    margin: 5px;
+    margin: 12px 0px;
 
     .roulette-button {
       box-sizing: content-box;
@@ -33,12 +42,16 @@
       margin: 0px 5px;
       color: $color-text;
       font-size: 14px;
-      height: 30px;
+      height: $roulette-height;
       width: 150px;
       outline: none;
 
-      &:hover {
+      &.on {
         cursor: pointer;
+      }
+
+      &.off {
+        opacity: 0.65;
       }
     }
 
@@ -58,7 +71,7 @@
         display: inline-block;
         box-sizing: border-box;
         width: 60px;
-        height: 30px;
+        height: $roulette-height;
         background-color: $color-switch-background-off;
         padding: 3px;
         cursor: pointer;

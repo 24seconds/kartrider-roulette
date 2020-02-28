@@ -4,7 +4,6 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
 .kartrider-collection-table-component {
   display: flex;
   flex-wrap: nowrap;
-  border: solid 1px #808080;
   position: relative;
   overflow: hidden;
   height: 500px;
@@ -20,7 +19,6 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
   }
 
   .collection-list {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border: none;
     width: 50%;
     opacity: 1;
@@ -36,7 +34,7 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
       align-items: center;
       width: auto;
       height: 63px;
-      border: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
 
       .collection-checkbox {
         @extend .collection-checkbox;

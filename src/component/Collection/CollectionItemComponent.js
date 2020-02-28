@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CheckBoxComponent from '../CheckBoxComponent';
-import { IMAGE_URL } from '../../redux/store';
+import { IMAGE_URL } from '../../database/constant';
 import { connect } from 'react-redux';
 import TrackPopupComponent from '../TrackPopup/TrackPopupComponent';
 import { UPDATE_COLLECTION } from '../../database/constant';
@@ -25,9 +25,11 @@ class CollectionItemComponent extends Component {
   async onEditItem() {
     const { collection, syncCollection, isChecked } = this.props;
 
+    document.body.style.overflowY = 'hidden';
     const result = await TrackPopupComponent.open({
       collection,
     });
+    document.body.style.overflowY = '';
 
     if (result['action'] === UPDATE_COLLECTION) {
       const updatedCollection = result['payload'];

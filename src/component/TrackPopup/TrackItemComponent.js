@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IMAGE_URL } from '../../redux/store';
+import { IMAGE_URL } from '../../database/constant';
 
 export default class TrackItemComponent extends Component {
   constructor(props) {

@@ -7,14 +7,20 @@ export default class TrackContainerComponent extends Component {
     super(props);
 
     this.onSelectTheme = this.onSelectTheme.bind(this);
+    this.containerRef = React.createRef();
   }
 
   onSelectTheme(theme) {
     const { onSelectTheme } = this.props;
+    this.scrollToRef();
 
     if (onSelectTheme) {
       onSelectTheme(theme);
     }
+  }
+
+  scrollToRef() {
+    this.containerRef.current.scrollTo(0, 0);
   }
 
   render() {
@@ -41,7 +47,7 @@ export default class TrackContainerComponent extends Component {
             })
           }
         </div>
-        <div className='track-item-container'>
+        <div className='track-item-container' ref={ this.containerRef }>
           {
             selectedTrackList.map(track => {
               return (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IMAGE_URL } from '../../redux/store';
+import { IMAGE_URL } from '../../database/constant';
 import IndexedDbManager from '../../database/IndexedDbManager';
 
 export default class CollectionDetailItemComponent extends Component {

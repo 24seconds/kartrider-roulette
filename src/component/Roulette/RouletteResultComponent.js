@@ -290,7 +290,7 @@ class RouletteResultComponent extends Component {
         </div>
         <div className='roulette-util'>
           <button
-            className='roulette-button'
+            className={ `roulette-button ${ rouletteResult ? 'off' : 'on' }` }
             onClick={ this.onPlayRoulette }
             disabled={ rouletteResult !== null }>
             Play Roulette!
