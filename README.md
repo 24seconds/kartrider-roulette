@@ -9,6 +9,8 @@
 
 ## 목차 (Table of Contents)
 
+## - [Demo](#demo)
+
 ## - [사용자 가이드](#사용자-가이드)
 - [사용자를 위한 설명](#사용자를-위한-설명)
 
@@ -25,6 +27,10 @@
     - [Kartrider Open API](#kartrider-open-api)
 
 -------
+
+## Demo
+
+<img src="https://imgur.com/hFIy3qZ.gif" width="400">
 
 ## 사용자를 위한 설명
 
