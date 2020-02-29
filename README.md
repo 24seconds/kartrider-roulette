@@ -1,68 +1,119 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## 카트라이더 룰렛! (KartRider Roulette!)
 
-In the project directory, you can run:
+카트라이더 트랙을 골라서 룰렛을 돌릴 수 있는 앱입니다  
 
-### `yarn start`
+## 목차 (Table of Contents)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## - [사용자 가이드](#사용자-가이드)
+- [사용자를 위한 설명](#사용자를-위한-설명)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## - [English description](#English-description)
+  - [Intro about kartrider roulette](#intro-about-kartrider-roulette)
+  - [Why web app?](#why-web-app)
+    - [Electron](#electron)
+    - [Indexed DB](#indexed-db)
+  - [Roulette Animation](#roulette-animation)
+    - [RequestAnimatinoFrame](#requestanimatinoframe)
+    - [Timing Function](#timing-function)
+  - [Data Resource](#data-resource)
+    - [Kartrider Open API](#kartrider-open-api)
 
-### `yarn test`
+-------
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 사용자를 위한 설명
 
-### `yarn build`
+카트라이더 룰렛은 자신이 원하는 트랙을 골라서 룰렛을 돌릴 수 있는 프로그램입니다
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 사용자는 자신만의 컬렉션을 만들 수 있고, 컬렉션에는 원하는 대로 트랙을 선택할 수 있습니다.
+- 선택 한 트랙들은 컬렉션 우측의 화살표 `>`를 클릭하면 자세히 볼 수 있습니다.
+- 컬렉션 왼쪽 체크박스를 체크하면 컬렉션의 트랙들이 룰렛에 추가됩니다.
+- 룰렛 애니메이션을 on/off 할 수 있습니다.
+- `룰렛 보기`를 통해 룰렛에 어떤 트랙들이 있는지 볼 수 있습니다.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+------
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## English description
 
-### `yarn eject`
+### Intro about kartrider roulette
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Kartrider Roulette is an app that can run roulette with customized track list.  
+User can create collection and add or delete tracks in its collection.  
+By checking collection, roulette includes those tracks.  
+Roulette Animation can be on/off.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-----
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Why web app?
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Oneday, I watched youtube and one of my favorite streamer had used roulette program as a content. And I thought it would be great if I upgrade roulette program and watch my favorite streamer using this. So I start this toy project. 
 
-## Learn More
+#### Electron
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Because target is clear, I need to make windows program. But I haven't made any kind of windows app, so I decide to use electron to build web app as portable windows program. I used electron-builder and make portale program
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Indexed DB
 
-### Code Splitting
+Because this app needs to store some structured data (user's collection, track list, track theme list etc..), using Indexed DB is proper than just using localStorage.  
+Indexed DB is transactional object oriented database system. Now I can say that IndexedDB is full of transaction. If you want to craete store, you need traction. If you want to add/remove something, you need transaction! It took some time for me to understand the meaning of `transactional`. lol.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+-----
 
-### Analyzing the Bundle Size
+### Roulette Animation
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Animating Roulette is important to attract user's interest and make app looks good!  
+To implement roulette, I used requestAnimationFrame and two div tags only. Plus, for animation customising, I used cubic-bezier curve equation.  
 
-### Making a Progressive Web App
+#### RequestAnimatinoFrame
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+[reuqestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) is good api for animating something without frame loss and battery drain. here is short example in `RouletteResultComponent`
 
-### Advanced Configuration
+```js
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+onPlayRoulette() {
+  if (isAnimationOn) {
+      const shuffledTrackList = this.shuffleFisherYates(trackList);
 
-### Deployment
+      // .... set timer for animation duration (around 3 seconds)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+      requestAnimationFrame(this.animationCallback.bind(this, shuffledTrackList));
+    } else {
+      // .... do not call requestAnimationFrame if you are done
+    }
+}
+```
 
-### `yarn build` fails to minify
+#### Timing Function
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Imagine how slot machine animation works. At first it goes really fast and getting slow when it reached to the end. I also wanted to implement slot machine like animation behavior, I used transition timing function. Well.. it's simple. Just make [cubic-bezier curve equation](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function). Here is example in `RouletteResultComponent`.
+
+```js
+getCubicBezierCurve(p1, p2, p3, p4) {
+    const [x1, y1] = p1;
+    const [x2, y2] = p2;
+    const [x3, y3] = p3;
+    const [x4, y4] = p4;
+
+    return function (t) {
+      const fun = (p1, p2, p3, p4) => {
+        return Math.pow(1 - t, 3) * p1
+          + 3 * Math.pow(1 - t, 2) * t * p2
+          + 3 * (1 - t) * Math.pow(t, 2) * p3
+          + Math.pow(t, 3) * p4;
+      };
+
+      const xt = fun(x1, x2, x3, x4);
+      const yt = fun(y1, y2, y3, y4);
+
+      return [xt, yt];
+    }
+  }
+```
+
+------
+
+### Data Resource
+
+#### Kartrider Open API
+
+Thanks to Kartrider, I get resources such as track image and track data from [Kartrider Open api](https://developers.nexon.com/kart) for detail in TrackPopupComponent. Without this, I would spend more time to get resources.
