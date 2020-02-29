@@ -1,6 +1,6 @@
 {
   "name": "kartrider_roulette",
-  "version": "1.0.0",
+  "version": "0.9.9",
   "private": true,
   "description": "kartrider roulette",
   "author": "24seconds",
@@ -16,7 +16,7 @@
           ]
         }
       ],
-      "icon": "build/icon.ico"
+      "icon": "public/icon.ico"
     }
   },
   "main": "public/electron.js",
