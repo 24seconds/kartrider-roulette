@@ -3,6 +3,10 @@
 
 카트라이더 트랙을 골라서 룰렛을 돌릴 수 있는 앱입니다  
 
+- 윈도우 프로그램 다운로드는 [여기](https://www.dropbox.com/s/e81emr3tqhuvmvh/%EC%B9%B4%ED%8A%B8%EB%9D%BC%EC%9D%B4%EB%8D%94_%EB%A3%B0%EB%A0%9B_0.9.9.exe?dl=0)
+- 혹은 [여기](https://github.com/24seconds/kartrider-roulette/releases) 에서 이 `kartrider_roulette.0.9.9.exe` 파일을 다운로드
+- 웹에서 보려면 [kartrider-roulette](https://24seconds.github.io/kartrider-roulette/) 여기
+
 ## 목차 (Table of Contents)
 
 ## - [사용자 가이드](#사용자-가이드)
@@ -10,6 +14,7 @@
 
 ## - [English description](#English-description)
   - [Intro about kartrider roulette](#intro-about-kartrider-roulette)
+    - [Download links](#download-links)
   - [Why web app?](#why-web-app)
     - [Electron](#electron)
     - [Indexed DB](#indexed-db)
@@ -41,6 +46,12 @@ Kartrider Roulette is an app that can run roulette with customized track list.
 User can create collection and add or delete tracks in its collection.  
 By checking collection, roulette includes those tracks.  
 Roulette Animation can be on/off.
+
+### Download links
+
+- windows program : [here](https://www.dropbox.com/s/e81emr3tqhuvmvh/%EC%B9%B4%ED%8A%B8%EB%9D%BC%EC%9D%B4%EB%8D%94_%EB%A3%B0%EB%A0%9B_0.9.9.exe?dl=0)  
+- or you can down load windows program [here](https://github.com/24seconds/kartrider-roulette/releases) also. Find `kartrider_roulette.0.9.9.exe` file  
+- If you prefer web, check here! => [kartrider-roulette](https://24seconds.github.io/kartrider-roulette/)
 
 -----
 
