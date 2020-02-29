@@ -71,6 +71,11 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
               cursor: pointer;
               opacity: 0.6;
             }
+
+            &.roulette-set {
+              margin: 0px 15px 0 5px;
+              width: 90px;
+            }
           }
         }
       }

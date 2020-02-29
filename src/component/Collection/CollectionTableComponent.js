@@ -9,7 +9,10 @@ import {
   deleteRouletteSet,
   deleteAllRouletteSet,
 } from '../../redux/action';
-import { LOCAL_STORAGE_COLLECTION_KEY } from '../../database/constant';
+import {
+  LOCAL_STORAGE_COLLECTION_KEY,
+  ROULETTE_COLLECTION_ID,
+} from '../../database/constant';
 
 class CollectionTableComponent extends Component {
   constructor(props) {
@@ -104,8 +107,13 @@ class CollectionTableComponent extends Component {
     await this.getAllColection();
   }
 
-  async onDeleteTrack(collectionId, trackName) {
+  async onDeleteTrack(collectionId = null, trackName) {
     const { collectionObject } = this.state;
+
+    if (collectionId === null || collectionId === ROULETTE_COLLECTION_ID) {
+      return;
+    }
+
     const collection = collectionObject[collectionId];
 
     const oldTrackList = collection['trackList'];
@@ -153,8 +161,41 @@ class CollectionTableComponent extends Component {
     }
   }
 
+  async getRouletteSetAsCollectionFormat() {
+    const { rouletteSet } = this.props;
+
+    const selectedCollection = await (async () => {
+      if (Object.keys(rouletteSet).length > 0) {
+        const trackList = await IndexedDbManager.getTrackList(Object.keys(rouletteSet));
+
+        const object = trackList.reduce((acc, track) => {
+          acc[track['theme']] = acc[track['theme']] || [];
+          acc[track['theme']] = [...acc[track['theme']], track];
+
+          return acc;
+        }, {});
+
+        return {
+          collectionId: ROULETTE_COLLECTION_ID,
+          trackList: object,
+        };
+      } else {
+        return {
+          collectionId: ROULETTE_COLLECTION_ID,
+          trackList: {},
+        };
+      }
+    })();
+
+    this.setState({ selectedCollection });
+  }
+
   async onDetail(isTableHidden, selectedCollectionId = null) {
-    await this.syncSelectedCollection(selectedCollectionId);
+    if (ROULETTE_COLLECTION_ID === selectedCollectionId) {
+      await this.getRouletteSetAsCollectionFormat();
+    } else {
+      await this.syncSelectedCollection(selectedCollectionId);
+    }
 
     this.setState({ isTableHidden });
   }
@@ -246,6 +287,11 @@ class CollectionTableComponent extends Component {
                   <button onClick={ this.onCreateCollection }>
                     추가
                   </button>
+                  <button
+                    className='roulette-set'
+                    onClick={ this.onDetail.bind(this, true, ROULETTE_COLLECTION_ID) }>
+                      룰렛 보기
+                  </button>
                 </div>
               </div>
             </div>
@@ -279,4 +325,7 @@ class CollectionTableComponent extends Component {
   }
 }
 
-export default connect()(CollectionTableComponent);
+const mapStateToProps = state => ({
+  rouletteSet: state.rouletteSet
+});
+export default connect(mapStateToProps)(CollectionTableComponent);

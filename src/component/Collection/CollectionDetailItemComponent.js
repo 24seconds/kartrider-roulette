@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { IMAGE_URL } from '../../database/constant';
+import { IMAGE_URL, ROULETTE_COLLECTION_ID } from '../../database/constant';
 import IndexedDbManager from '../../database/IndexedDbManager';
 
 export default class CollectionDetailItemComponent extends Component {
@@ -46,15 +46,25 @@ export default class CollectionDetailItemComponent extends Component {
     }, 0);
   }
 
+  getDetailTitle() {
+    const { collectionId, trackList } = this.props;
+
+    if (collectionId === ROULETTE_COLLECTION_ID) {
+      return `룰렛에 있는 트랙 (${ this.getTrackLength(trackList) })`;
+    } else {
+      return `선택된 트랙 (${ this.getTrackLength(trackList) })`;
+    }
+  }
+
   render() {
-    const { trackList } = this.props;
+    const { trackList, collectionId } = this.props;
     const { themeList } = this.state;
 
     return (
       <div className='kartrider-collection-detail-item-component'>
         <h3 className='collection-detail-title' >
           <div>
-            { `선택된 트랙 (${ this.getTrackLength(trackList) })` }
+            { this.getDetailTitle() }
           </div>
           <button className='collection-detail-back' onClick={ this.onBack } >
             <img src={ `${IMAGE_URL}/icon_back.png` } alt="back to collection list icon" />
@@ -75,9 +85,13 @@ export default class CollectionDetailItemComponent extends Component {
                     <div>
                       { track['trackName'] }
                     </div>
-                    <button className='collection-detail-delete' onClick={ this.onDeleteItem.bind(this, track['trackName']) }>
-                      <img src={ `${IMAGE_URL}/icon_delete.svg` } alt="delete icon" />
-                    </button>
+                    {
+                      collectionId === ROULETTE_COLLECTION_ID
+                      ? null
+                      : <button className='collection-detail-delete' onClick={ this.onDeleteItem.bind(this, track['trackName']) }>
+                          <img src={ `${IMAGE_URL}/icon_delete.svg` } alt="delete icon" />
+                        </button>
+                    }
                   </div>
                 );
               })

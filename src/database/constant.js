@@ -17,3 +17,4 @@ export const ROULETTE_SCALE = 20;
 export const LOCAL_STORAGE_COLLECTION_KEY = 'check';
 export const LOCAL_STORAGE_ANIMATION_KEY = 'animation';
 export const IMAGE_URL = 'asset';
+export const ROULETTE_COLLECTION_ID = 'rouletteSet';
