@@ -39,7 +39,7 @@ class RouletteResultComponent extends Component {
       ),
       startTime: null,
       rouletteResult: null,
-      isAnimationOn: false,
+      isAnimationOn: true,
     };
 
     this.onPlayRoulette = this.onPlayRoulette.bind(this);
