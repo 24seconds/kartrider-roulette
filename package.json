@@ -1,11 +1,11 @@
 {
-  "name": "roulette",
-  "version": "0.1.0",
+  "name": "kartrider_roulette",
+  "version": "1.0.0",
   "private": true,
-  "description": "my project application description",
-  "author": "author text here",
+  "description": "kartrider roulette",
+  "author": "24seconds",
   "build": {
-    "appId": "my app id here",
+    "appId": "kartrider.roulette",
     "win": {
       "target": [
         {
@@ -15,7 +15,8 @@
             "ia32"
           ]
         }
-      ]
+      ],
+      "icon": "build/icon.ico"
     }
   },
   "main": "public/electron.js",
@@ -26,6 +27,7 @@
     "@testing-library/user-event": "^7.1.2",
     "cross-env": "^7.0.0",
     "electron-is-dev": "^1.1.0",
+    "gh-pages": "^2.2.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -35,11 +37,13 @@
     "typeface-noto-sans-kr": "0.0.63"
   },
   "scripts": {
+    "predeploy": "npm run react-build",
+    "deploy": "gh-pages -d build",
     "react-start": "react-scripts start",
     "react-build": "react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
+    "electron-build": "electron-builder -w",
     "release": "yarn react-build && electron-builder --publish=always",
     "build": "yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
