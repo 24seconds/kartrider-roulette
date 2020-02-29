@@ -84,6 +84,7 @@ $transition-animation: transform $duration ease-in-out, opacity $duration ease-i
     .collection-list-body {
       height: 80%;
       overflow-y: scroll;
+      margin: 0 1px;
 
       > div {
         height: 63px;
