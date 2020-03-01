@@ -30,6 +30,8 @@
 
 ## Demo
 
+web : [kartrider-roulette](https://24seconds.github.io/kartrider-roulette/)
+
 <img src="https://imgur.com/hFIy3qZ.gif" width="400">
 
 ## 사용자를 위한 설명
