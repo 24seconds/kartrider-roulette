@@ -85,7 +85,7 @@ To implement roulette, I used requestAnimationFrame and two div tags only. Plus,
 
 #### RequestAnimatinoFrame
 
-[reuqestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) is good api for animating something without frame loss and battery drain. here is short example in `RouletteResultComponent`
+[reuqestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) is good api for animating something without frame loss and battery drain. here is short example in `RouletteResultComponent`.
 
 ```js
 
