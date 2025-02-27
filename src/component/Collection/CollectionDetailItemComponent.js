@@ -19,7 +19,7 @@ export default class CollectionDetailItemComponent extends Component {
 
   onBack() {
     this.props.onClick(false, null);
-    this.state.mapInputValue = '';
+    this.setState({ mapInputValue: '' })
   }
 
   onDeleteItem(trackName) {
@@ -74,7 +74,7 @@ export default class CollectionDetailItemComponent extends Component {
             { this.getDetailTitle() }
           </div>
           <input
-            className='mapSearchInput'
+            className='map-search-input'
             type="text"
             value={this.state.mapInputValue}
             onChange={this.handleSearchMapNameOnChange}
@@ -93,7 +93,8 @@ export default class CollectionDetailItemComponent extends Component {
                 return null;
               }
               return tracks.map(track => {
-                if(!mapInputValue.length){
+                const foundSeachTrack = searchTrack.items.find(Object => Object.trackName === track.trackName)
+                if(foundSeachTrack){
                   return (
                     <div key={ `key-detail-${track['trackName']}` } className='collection-detail-track'>
                       <img src={ `${IMAGE_URL}/theme/${track.theme}.png` } alt="track icon" />
@@ -110,29 +111,8 @@ export default class CollectionDetailItemComponent extends Component {
                     </div>
                   );
                 }
-
                 else{
-                  const foundSeachTrack = searchTrack.items.find(Object => Object.trackName === track.trackName)
-                  if(foundSeachTrack){
-                    return (
-                      <div key={ `key-detail-${track['trackName']}` } className='collection-detail-track'>
-                        <img src={ `${IMAGE_URL}/theme/${track.theme}.png` } alt="track icon" />
-                        <div>
-                          { track['trackName'] }
-                        </div>
-                        {
-                          collectionId === ROULETTE_COLLECTION_ID
-                          ? null
-                          : <button className='collection-detail-delete' onClick={ this.onDeleteItem.bind(this, track['trackName']) }>
-                              <img src={ `${IMAGE_URL}/icon_delete.svg` } alt="delete icon" />
-                            </button>
-                        }
-                      </div>
-                    );
-                  }
-                  else{
-                    return null
-                  }
+                  return null
                 }
               })
             })
