@@ -88,13 +88,15 @@ export default class CollectionDetailItemComponent extends Component {
           {
             themeList.map(theme => {
               const tracks = trackList[theme['themeName']] || [];
-              const searchTrack = hansearch(tracks,mapInputValue)
+              const processedTracks = tracks.map((track) => ({
+                ...track,
+                imageName: track.imageName.replace(/\s+/g, ''),
+              }));
+              const searchTrack = hansearch(processedTracks, mapInputValue.replace(/\s+/g, ''), ["imageName"]);
               if (!tracks.length) {
                 return null;
               }
-              return tracks.map(track => {
-                const foundSeachTrack = searchTrack.items.find(Object => Object.trackName === track.trackName)
-                if(foundSeachTrack){
+              return searchTrack.items.map(track => {
                   return (
                     <div key={ `key-detail-${track['trackName']}` } className='collection-detail-track'>
                       <img src={ `${IMAGE_URL}/theme/${track.theme}.png` } alt="track icon" />
@@ -110,10 +112,6 @@ export default class CollectionDetailItemComponent extends Component {
                       }
                     </div>
                   );
-                }
-                else{
-                  return null
-                }
               })
             })
           }
