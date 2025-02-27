@@ -1,6 +1,12 @@
 .kartrider-collection-detail-item-component {
   height: 100%;
-
+  .map-search-input{
+    width: 250px;
+    height: 25px;
+    margin-left: 50px;
+    text-indent: 10px;
+    font-size: 16px;
+  }
   .collection-detail-title {
     display: flex;
     position: relative;
