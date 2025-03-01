@@ -137,7 +137,7 @@ export default class CollectionDetailItemComponent extends Component {
                 ...track,
                 searchTrackName: track.trackName.replace(/\s+/g, ''),
               }));
-              const searchTrack = hansearch(processedTracks, mapInputValue.replace(/\s+/g, ''), ["searchTrackName"]);       
+              const searchTrack = hansearch(processedTracks, mapInputValue.replace(/\s+/g, ''), ["searchTrackName",'imageName','trackName']);       
               console.log(searchTrack)       
               if (!tracks.length) {
                 return null;
