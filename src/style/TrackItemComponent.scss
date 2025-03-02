@@ -128,17 +128,6 @@ a
 }
 
 .kartrider-track-item-component.popup-component {
-  .border {
-    width: 300px;
-
-    &:hover {
-      border: solid 3px $color-transparent;
-      border-radius: 5px;
-      cursor: default;
-      opacity: 1;
-    }
-  }
-  
   .special {
 
     &.crazy {

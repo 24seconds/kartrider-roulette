@@ -92,7 +92,7 @@ export default class CollectionDetailItemComponent extends Component {
       const style = {
         position: 'absolute',
         left: `${mouseX - 100}px`,
-        top: `${mouseY - 200}px`,
+        top: `${mouseY - 170}px`,
       };
       return (
         <div
