@@ -109,7 +109,6 @@ export default class CollectionDetailItemComponent extends Component {
   render() {
     const { trackList, collectionId } = this.props;
     const { themeList, mapInputValue } = this.state;
-    const body = document.querySelector('body');
     return (
       <div className='kartrider-collection-detail-item-component'>
         <h3 className='collection-detail-title' >
@@ -148,7 +147,7 @@ export default class CollectionDetailItemComponent extends Component {
                       onMouseLeave={this.handleMouseLeave}
                       onMouseMove={this.handleMouseMove}
                     >
-                      {body && ReactDOM.createPortal(this.createPortalPopup(), body)}
+                      {ReactDOM.createPortal(this.createPortalPopup(), document.body)}
                       <img src={ `${IMAGE_URL}/theme/${track.theme}.png` } alt="track icon" />
                       <div>
                         { track['trackName'] }
