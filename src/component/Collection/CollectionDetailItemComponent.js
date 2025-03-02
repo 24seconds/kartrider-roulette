@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { IMAGE_URL, ROULETTE_COLLECTION_ID } from '../../database/constant';
 import IndexedDbManager from '../../database/IndexedDbManager';
 import hansearch from "hangul-search";
+import TrackItemPopupComponent from "../TrackPopup/TrackItemPopupComponent";
+import ReactDOM from 'react-dom';
 
 export default class CollectionDetailItemComponent extends Component {
   constructor(props) {
@@ -9,17 +11,24 @@ export default class CollectionDetailItemComponent extends Component {
     this.state = {
       trackList: [],
       themeList: [],
-      mapInputValue : '',
-    }
+      mapInputValue: '',
+      isShowPopup: false,
+      selectedTrack: null,
+      mouseX: 0,
+      mouseY: 0,
+    };
     this.onBack = this.onBack.bind(this);
     this.onDeleteItem = this.onDeleteItem.bind(this);
     this.getTrackLength = this.getTrackLength.bind(this);
     this.handleSearchMapNameOnChange = this.handleSearchMapNameOnChange.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
   }
 
   onBack() {
     this.props.onClick(false, null);
-    this.setState({ mapInputValue: '' })
+    this.setState({ mapInputValue: '' });
   }
 
   onDeleteItem(trackName) {
@@ -57,16 +66,49 @@ export default class CollectionDetailItemComponent extends Component {
       return `선택된 트랙 (${ this.getTrackLength(trackList) })`;
     }
   }
-
-
+  
   handleSearchMapNameOnChange(e) {
     this.setState({ mapInputValue: e.target.value });
   }
 
+  handleMouseEnter(track) {
+    this.setState({ isShowPopup: true, selectedTrack: track });
+  }
+
+  handleMouseLeave() {
+    this.setState({ isShowPopup: false });
+  }
+
+  handleMouseMove(event) {
+    this.setState({
+      mouseX: event.clientX,
+      mouseY: event.clientY,
+    });
+  }
+
+  createPortalPopup() {
+    const { isShowPopup, selectedTrack, mouseX, mouseY } = this.state;
+    if (!isShowPopup) return null;
+      const style = {
+        position: 'absolute',
+        left: `${mouseX - 100}px`,
+        top: `${mouseY - 170}px`,
+      };
+      return (
+        <div
+          className="popup-container"
+          style={style}
+        >
+          <TrackItemPopupComponent
+            track={selectedTrack}
+          />
+        </div>
+      );
+  }
+
   render() {
     const { trackList, collectionId } = this.props;
-    const { themeList } = this.state;
-    const { mapInputValue } = this.state;
+    const { themeList, mapInputValue } = this.state;
     return (
       <div className='kartrider-collection-detail-item-component'>
         <h3 className='collection-detail-title' >
@@ -76,7 +118,7 @@ export default class CollectionDetailItemComponent extends Component {
           <input
             className='map-search-input'
             type="text"
-            value={this.state.mapInputValue}
+            value={mapInputValue}
             onChange={this.handleSearchMapNameOnChange}
             placeholder="맵 이름 검색"
           />
@@ -90,15 +132,22 @@ export default class CollectionDetailItemComponent extends Component {
               const tracks = trackList[theme['themeName']] || [];
               const processedTracks = tracks.map((track) => ({
                 ...track,
-                imageName: track.imageName.replace(/\s+/g, ''),
+                searchTrackName: track.trackName.replace(/\s+/g, ''),
               }));
-              const searchTrack = hansearch(processedTracks, mapInputValue.replace(/\s+/g, ''), ["imageName"]);
+              const searchTrack = hansearch(processedTracks, mapInputValue.replace(/\s+/g, ''), ["searchTrackName",'imageName','trackName']);           
               if (!tracks.length) {
                 return null;
               }
-              return searchTrack.items.map(track => {
+               return searchTrack.items.map(track => {
                   return (
-                    <div key={ `key-detail-${track['trackName']}` } className='collection-detail-track'>
+                    <div
+                      key={ `key-detail-${track['trackName']}` }
+                      className='collection-detail-track'
+                      onMouseEnter={this.handleMouseEnter.bind(this, track)}
+                      onMouseLeave={this.handleMouseLeave}
+                      onMouseMove={this.handleMouseMove}
+                    >
+                      {ReactDOM.createPortal(this.createPortalPopup(), document.body)}
                       <img src={ `${IMAGE_URL}/theme/${track.theme}.png` } alt="track icon" />
                       <div>
                         { track['trackName'] }

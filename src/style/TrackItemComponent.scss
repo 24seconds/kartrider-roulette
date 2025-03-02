@@ -126,3 +126,15 @@ a
     // opacity: 0.7;
   }
 }
+
+.kartrider-track-item-component.popup-component {
+  .special {
+
+    &.crazy {
+      color: #7fff4d;
+      font-size: 32px;
+      transform-origin: 50% 50%;
+      transform: rotate(-15deg);
+    }
+  }
+}
