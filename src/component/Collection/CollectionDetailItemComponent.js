@@ -88,7 +88,7 @@ export default class CollectionDetailItemComponent extends Component {
 
   createPortalPopup() {
     const { isShowPopup, selectedTrack, mouseX, mouseY } = this.state;
-    if (isShowPopup) {
+    if (!isShowPopup) return null;
       const style = {
         position: 'absolute',
         left: `${mouseX - 100}px`,
@@ -104,8 +104,6 @@ export default class CollectionDetailItemComponent extends Component {
           />
         </div>
       );
-    }
-    return null;
   }
 
   render() {
