@@ -144,6 +144,7 @@ export default class CollectionDetailItemComponent extends Component {
                return searchTrack.items.map(track => {
                   return (
                     <div
+                      key={ `key-detail-${track['trackName']}` }
                       className='collection-detail-track'
                       onMouseEnter={this.handleMouseEnter.bind(this, track)}
                       onMouseLeave={this.handleMouseLeave}
