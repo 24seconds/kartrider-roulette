@@ -128,6 +128,9 @@ a
 }
 
 .kartrider-track-item-component.popup-component {
+  position: absolute;
+  left: var(--mouse-x);
+  top: var(--mouse-y);
   .special {
 
     &.crazy {
