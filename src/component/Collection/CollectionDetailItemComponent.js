@@ -96,8 +96,8 @@ export default class CollectionDetailItemComponent extends Component {
       };
       return (
         <div
-          className="popup-container"
-          style={style}
+        className="popup-container"
+        style={style}
         >
           <TrackItemPopupComponent
             track={selectedTrack}
